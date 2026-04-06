@@ -1,0 +1,447 @@
+{
+  "project": {
+    "name": "Srinath Yoga School",
+    "type": "online_yoga_platform",
+    "version": "1.0.0",
+    "description": "Online yoga course and workshop booking platform for global students",
+    "brand_focus": "Mysore yoga tradition"
+  },
+
+  "stack": {
+    "frontend": {
+      "languages": ["HTML", "CSS", "JavaScript"],
+      "hosting": "Vercel",
+      "design_reference": "inspiration.html",
+      "notes": "Replicate layout, fonts, colors, images from inspiration.html"
+    },
+    "backend": {
+      "provider": "Supabase",
+      "services": ["PostgreSQL", "Auth", "REST API", "Storage", "Realtime"]
+    },
+    "auth": {
+      "method": "Google OAuth",
+      "password_login": false,
+      "manual_signup": false
+    },
+    "payments": ["PayPal", "Razorpay"],
+    "currency": "multi-currency",
+    "repo": "GitHub",
+    "email_automation": true,
+    "whatsapp_integration": true
+  },
+
+  "pages": [
+    {
+      "id": "home",
+      "path": "/",
+      "title": "Home",
+      "sections": [
+        { "id": "hero", "type": "hero", "cta": "Book a Class" },
+        { "id": "about_preview", "type": "about_snippet", "links_to": "/about" },
+        { "id": "featured_courses", "type": "course_cards", "count": 3, "links_to": "/classes" },
+        { "id": "workshop_overview", "type": "workshop_banner", "links_to": "/workshops" },
+        { "id": "testimonials", "type": "testimonial_carousel", "note": "Homepage only, not a separate page" },
+        { "id": "cta_booking", "type": "cta_section", "action": "scroll_to_courses" },
+        { "id": "blog_preview", "type": "blog_cards", "count": 3, "links_to": "/blog" },
+        { "id": "contact_info", "type": "contact_strip" },
+        { "id": "footer", "type": "footer" }
+      ]
+    },
+    {
+      "id": "about",
+      "path": "/about",
+      "title": "About Srinath Yoga Master",
+      "sections": ["bio", "credentials", "teaching_philosophy", "cta"]
+    },
+    {
+      "id": "classes",
+      "path": "/classes",
+      "title": "Online Classes",
+      "sections": ["course_list", "filters", "booking_cta"]
+    },
+    {
+      "id": "workshops",
+      "path": "/workshops",
+      "title": "Workshops",
+      "sections": ["workshop_list", "upcoming_dates", "booking_cta"]
+    },
+    {
+      "id": "calendar",
+      "path": "/calendar",
+      "title": "Calendar / Schedule",
+      "sections": ["calendar_view", "event_list", "seat_availability"],
+      "user_actions": ["view_schedule", "book_from_calendar"]
+    },
+    {
+      "id": "blog",
+      "path": "/blog",
+      "title": "Blog",
+      "sections": ["post_list", "search", "categories"]
+    },
+    {
+      "id": "blog_post",
+      "path": "/blog/:slug",
+      "title": "Blog Post",
+      "sections": ["post_content", "related_posts", "cta"]
+    },
+    {
+      "id": "contact",
+      "path": "/contact",
+      "title": "Contact",
+      "sections": ["contact_form", "whatsapp_button", "location_info"]
+    },
+    {
+      "id": "login",
+      "path": "/login",
+      "title": "Login",
+      "method": "Google OAuth only"
+    },
+    {
+      "id": "dashboard",
+      "path": "/dashboard",
+      "title": "Student Dashboard",
+      "auth_required": true,
+      "sections": [
+        "upcoming_classes",
+        "purchased_classes",
+        "past_classes",
+        "payment_history",
+        "invoices",
+        "booking_status"
+      ]
+    }
+  ],
+
+  "course_types": [
+    {
+      "type": "online_class",
+      "label": "Online Yoga Class",
+      "delivery": "Zoom (live)",
+      "drop_in": false,
+      "in_person": false
+    },
+    {
+      "type": "online_workshop",
+      "label": "Online Workshop",
+      "delivery": "Zoom (live)",
+      "duration": "1-day or multi-day"
+    },
+    {
+      "type": "online_course",
+      "label": "Online Course",
+      "delivery": "Zoom (live)",
+      "duration": "multi-week"
+    }
+  ],
+
+  "booking_flow": {
+    "entry_points": ["course_page", "calendar_page"],
+    "steps": [
+      { "step": 1, "action": "select_course" },
+      { "step": 2, "action": "fill_registration_form" },
+      { "step": 3, "action": "select_payment_option" },
+      { "step": 4, "action": "complete_payment" },
+      { "step": 5, "action": "system_confirms_booking" },
+      { "step": 6, "action": "send_confirmation_email_with_invoice" }
+    ],
+    "registration_form_fields": [
+      { "name": "full_name", "type": "text", "required": true },
+      { "name": "email", "type": "email", "required": true },
+      { "name": "phone_number", "type": "tel", "required": true },
+      { "name": "country", "type": "select", "required": true },
+      { "name": "experience_level", "type": "select", "options": ["Beginner", "Intermediate", "Advanced"], "required": true },
+      { "name": "medical_conditions", "type": "textarea", "required": false }
+    ],
+    "payment_options": [
+      {
+        "id": "deposit",
+        "label": "Pay 10% Deposit Now",
+        "description": "Remaining balance due before class begins",
+        "upfront_percent": 10
+      },
+      {
+        "id": "full",
+        "label": "Pay Full Amount",
+        "upfront_percent": 100
+      }
+    ],
+    "promo_codes": false,
+    "discount_codes": false
+  },
+
+  "seat_management": {
+    "admin_sets_seat_limit": true,
+    "auto_close_on_full": true,
+    "sold_out_label_on_calendar": true,
+    "waitlist": false
+  },
+
+  "payment": {
+    "gateways": [
+      {
+        "name": "PayPal",
+        "use_case": "international students",
+        "fee_estimate": "4-5% per transaction",
+        "monthly_cost": 0
+      },
+      {
+        "name": "Razorpay",
+        "use_case": "Indian students + international cards",
+        "fee_estimate": "2-4% depending on card/location",
+        "monthly_cost": 0,
+        "supports": ["UPI", "credit_card", "debit_card", "net_banking", "bank_transfer"]
+      }
+    ],
+    "currencies": "multi-currency",
+    "invoice_generation": "after_payment_confirmed_only",
+    "invoice_format": "PDF"
+  },
+
+  "email_automation": {
+    "provider": "to_be_configured",
+    "emails": [
+      {
+        "trigger": "payment_confirmed",
+        "name": "Enrollment Email",
+        "send_timing": "immediately",
+        "contents": [
+          "congratulations_message",
+          "course_details",
+          "student_submitted_details",
+          "pdf_invoice_attachment"
+        ]
+      },
+      {
+        "trigger": "before_class_start",
+        "name": "Reminder Email",
+        "send_timing": "24h before class",
+        "contents": [
+          "class_reminder",
+          "course_information",
+          "zoom_link_placeholder"
+        ]
+      },
+      {
+        "trigger": "after_1day_workshop",
+        "name": "Follow-Up Email",
+        "send_timing": "1 day after workshop ends",
+        "contents": [
+          "testimonial_review_request",
+          "cross_sell_other_courses"
+        ]
+      }
+    ]
+  },
+
+  "whatsapp": {
+    "features": [
+      {
+        "id": "click_to_chat",
+        "description": "Floating WhatsApp button on all pages",
+        "links_to": "admin WhatsApp number"
+      },
+      {
+        "id": "admin_booking_notification",
+        "description": "Admin receives WhatsApp message on new booking"
+      },
+      {
+        "id": "student_booking_confirmation",
+        "description": "Student receives WhatsApp booking confirmation"
+      }
+    ]
+  },
+
+  "calendar": {
+    "displays": ["course_schedules", "workshop_dates", "seat_availability"],
+    "student_actions": ["view_upcoming_classes", "book_from_calendar"],
+    "admin_actions": ["add_event", "edit_event", "delete_event", "block_dates"],
+    "sold_out_indicator": true
+  },
+
+  "student_dashboard": {
+    "auth_required": true,
+    "sections": [
+      { "id": "upcoming_classes", "description": "List of booked upcoming sessions" },
+      { "id": "purchased_classes", "description": "All courses purchased" },
+      { "id": "past_classes", "description": "Completed sessions" },
+      { "id": "payment_history", "description": "All transactions with status" },
+      { "id": "invoices", "description": "Downloadable PDF invoices per payment" },
+      { "id": "booking_status", "description": "Confirmed / pending / cancelled status" }
+    ]
+  },
+
+  "admin_panel": {
+    "path": "/admin",
+    "auth_required": true,
+    "role": "admin",
+    "modules": [
+      {
+        "id": "dashboard_overview",
+        "widgets": ["total_bookings", "total_revenue", "upcoming_classes", "recent_students"]
+      },
+      {
+        "id": "course_management",
+        "actions": [
+          "create_course",
+          "edit_course",
+          "set_price",
+          "set_deposit_percent",
+          "set_seat_limit",
+          "upload_media",
+          "set_course_dates",
+          "toggle_active"
+        ]
+      },
+      {
+        "id": "student_crm",
+        "fields_visible": ["name", "email", "phone", "country", "course_enrolled", "payment_status"],
+        "actions": ["view_profile", "view_enrollments", "view_payment_history", "export_csv"]
+      },
+      {
+        "id": "payment_dashboard",
+        "views": ["payments_received", "pending_payments", "failed_payments", "payment_method_breakdown", "transaction_history"]
+      },
+      {
+        "id": "blog_cms",
+        "actions": ["create_post", "edit_post", "delete_post", "upload_image", "set_seo_metadata"]
+      },
+      {
+        "id": "calendar_management",
+        "actions": ["add_event", "edit_event", "delete_event", "block_dates"]
+      }
+    ]
+  },
+
+  "database": {
+    "provider": "Supabase PostgreSQL",
+    "tables": [
+      {
+        "table": "users",
+        "columns": [
+          { "name": "id", "type": "uuid", "primary_key": true },
+          { "name": "email", "type": "text", "unique": true, "not_null": true },
+          { "name": "name", "type": "text" },
+          { "name": "phone", "type": "text" },
+          { "name": "country", "type": "text" },
+          { "name": "google_id", "type": "text", "unique": true },
+          { "name": "role", "type": "text", "default": "student", "options": ["student", "admin"] },
+          { "name": "created_at", "type": "timestamptz", "default": "now()" }
+        ]
+      },
+      {
+        "table": "courses",
+        "columns": [
+          { "name": "id", "type": "uuid", "primary_key": true },
+          { "name": "title", "type": "text", "not_null": true },
+          { "name": "type", "type": "text", "options": ["online_class", "online_workshop", "online_course"] },
+          { "name": "description", "type": "text" },
+          { "name": "price", "type": "numeric", "not_null": true },
+          { "name": "currency", "type": "text", "default": "USD" },
+          { "name": "deposit_percent", "type": "integer", "default": 10 },
+          { "name": "seat_limit", "type": "integer" },
+          { "name": "seats_booked", "type": "integer", "default": 0 },
+          { "name": "start_date", "type": "timestamptz" },
+          { "name": "end_date", "type": "timestamptz" },
+          { "name": "zoom_link", "type": "text", "note": "placeholder for future Zoom integration" },
+          { "name": "media_url", "type": "text" },
+          { "name": "is_active", "type": "boolean", "default": true },
+          { "name": "created_at", "type": "timestamptz", "default": "now()" }
+        ]
+      },
+      {
+        "table": "bookings",
+        "columns": [
+          { "name": "id", "type": "uuid", "primary_key": true },
+          { "name": "user_id", "type": "uuid", "foreign_key": "users.id" },
+          { "name": "course_id", "type": "uuid", "foreign_key": "courses.id" },
+          { "name": "status", "type": "text", "options": ["pending", "confirmed", "cancelled"] },
+          { "name": "payment_option", "type": "text", "options": ["deposit", "full"] },
+          { "name": "full_name", "type": "text" },
+          { "name": "email", "type": "text" },
+          { "name": "phone", "type": "text" },
+          { "name": "country", "type": "text" },
+          { "name": "experience_level", "type": "text" },
+          { "name": "medical_conditions", "type": "text" },
+          { "name": "created_at", "type": "timestamptz", "default": "now()" }
+        ]
+      },
+      {
+        "table": "payments",
+        "columns": [
+          { "name": "id", "type": "uuid", "primary_key": true },
+          { "name": "booking_id", "type": "uuid", "foreign_key": "bookings.id" },
+          { "name": "amount", "type": "numeric", "not_null": true },
+          { "name": "currency", "type": "text" },
+          { "name": "method", "type": "text", "options": ["paypal", "razorpay_card", "upi", "bank_transfer"] },
+          { "name": "status", "type": "text", "options": ["paid", "pending", "failed"] },
+          { "name": "transaction_id", "type": "text" },
+          { "name": "invoice_url", "type": "text" },
+          { "name": "payment_type", "type": "text", "options": ["deposit", "balance", "full"] },
+          { "name": "created_at", "type": "timestamptz", "default": "now()" }
+        ]
+      },
+      {
+        "table": "blog_posts",
+        "columns": [
+          { "name": "id", "type": "uuid", "primary_key": true },
+          { "name": "title", "type": "text", "not_null": true },
+          { "name": "slug", "type": "text", "unique": true, "not_null": true },
+          { "name": "body", "type": "text" },
+          { "name": "image_url", "type": "text" },
+          { "name": "seo_title", "type": "text" },
+          { "name": "seo_description", "type": "text" },
+          { "name": "is_published", "type": "boolean", "default": false },
+          { "name": "published_at", "type": "timestamptz" },
+          { "name": "created_at", "type": "timestamptz", "default": "now()" }
+        ]
+      },
+      {
+        "table": "calendar_events",
+        "columns": [
+          { "name": "id", "type": "uuid", "primary_key": true },
+          { "name": "course_id", "type": "uuid", "foreign_key": "courses.id", "nullable": true },
+          { "name": "date", "type": "date", "not_null": true },
+          { "name": "is_blocked", "type": "boolean", "default": false },
+          { "name": "label", "type": "text" },
+          { "name": "created_at", "type": "timestamptz", "default": "now()" }
+        ]
+      }
+    ]
+  },
+
+  "seo": {
+    "target_keywords": [
+      "online yoga classes",
+      "yoga classes mysore online",
+      "mysore yoga tradition",
+      "online yoga workshops",
+      "yoga teacher insights"
+    ],
+    "blog_driven": true,
+    "meta_fields_per_page": ["title", "description", "og_image", "slug"]
+  },
+
+  "performance": {
+    "page_load_target": "under 2 seconds",
+    "mobile_responsive": true,
+    "image_optimization": true,
+    "hosting": "Vercel"
+  },
+
+  "future_features": [
+    { "id": "zoom_integration", "note": "Build Zoom link field in DB now, integrate API later" },
+    { "id": "recorded_video_courses", "note": "Storage infra via Supabase already in place" },
+    { "id": "course_certificates", "note": "PDF generation hook needed" },
+    { "id": "mobile_app", "note": "Use REST API from Supabase, keep frontend logic portable" }
+  ],
+
+  "constraints": [
+    "No in-person classes",
+    "No drop-in classes",
+    "No manual password login — Google OAuth only",
+    "No promo or discount codes in v1",
+    "Testimonials appear on homepage only",
+    "Invoices generated only after payment is confirmed",
+    "All sessions conducted online only"
+  ]
+}
