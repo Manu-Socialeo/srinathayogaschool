@@ -115,7 +115,7 @@ export default function EventsPage() {
       {/* Hero */}
       <section className="relative pt-40 pb-20 bg-gray-900 text-white overflow-hidden" data-aos="fade-up">
         <div className="absolute inset-0 opacity-20">
-          <img src="/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/image-03.jpg" className="w-full h-full object-cover" alt="" />
+          <img src="/images/image-03.jpg" className="w-full h-full object-cover" alt="" />
         </div>
         <div className="container mx-auto px-4 relative z-10 text-center">
           <div className="inline-flex items-center gap-2 bg-teal-500/20 text-teal-400 px-4 py-1 rounded-full text-sm font-medium mb-6">

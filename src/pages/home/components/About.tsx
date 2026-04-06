@@ -161,7 +161,7 @@ export default function About() {
               <div className="absolute bottom-8 right-8 bg-white rounded-xl p-6 shadow-xl max-w-sm hover:shadow-2xl transition-shadow duration-300 animate-float">
                 <div className="flex items-start gap-4">
                   <img 
-                    src="/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/customer-avatar-01.jpg"
+                    src="/images/customer-avatar-01.jpg"
                     alt="Customer"
                     className="w-12 h-12 rounded-full object-cover"
                   />

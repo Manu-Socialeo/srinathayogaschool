@@ -26,7 +26,7 @@ const articles: Record<string, Article> = {
     date: 'January 15, 2025',
     author: 'Dr. Balasundara Srinatha',
     readTime: '5 min read',
-    image: '/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/image-01.jpg',
+    image: '/images/image-01.jpg',
     content: [
       'In the ancient tradition of yoga, meditation (Dhyana) is considered the seventh limb of the eightfold path. It is the bridge between the external practices and the innermost state of pure awareness. Yet, in our modern world, many people struggle to find even ten minutes for this transformative practice.',
       'The beauty of daily meditation lies not in its complexity but in its simplicity. When you sit quietly and observe your breath, you begin to notice the patterns of your mind — the endless stream of thoughts, the emotional reactions, the habitual responses that govern your life.',
@@ -36,9 +36,9 @@ const articles: Record<string, Article> = {
       'Over time, you will notice changes. You may find yourself responding rather than reacting to stressful situations. You may sleep better, feel more energized, and experience a deeper sense of connection to yourself and others. These are not promises — they are the natural fruits of a consistent practice.'
     ],
     relatedPosts: [
-      { slug: 'breathing-techniques-for-stress-relief', title: 'Breathing Techniques for Stress Relief', image: '/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/image-03.jpg', category: 'Wellness' },
-      { slug: 'understanding-eight-limbs-of-yoga', title: 'Understanding the Eight Limbs of Yoga', image: '/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/hero-02.jpg', category: 'Philosophy' },
-      { slug: 'benefits-of-restorative-yoga', title: 'The Benefits of Restorative Yoga', image: '/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/image-02.jpg', category: 'Recovery' }
+      { slug: 'breathing-techniques-for-stress-relief', title: 'Breathing Techniques for Stress Relief', image: '/images/image-03.jpg', category: 'Wellness' },
+      { slug: 'understanding-eight-limbs-of-yoga', title: 'Understanding the Eight Limbs of Yoga', image: '/images/hero-02.jpg', category: 'Philosophy' },
+      { slug: 'benefits-of-restorative-yoga', title: 'The Benefits of Restorative Yoga', image: '/images/image-02.jpg', category: 'Recovery' }
     ]
   },
   'morning-yoga-routines-for-beginners': {
@@ -48,7 +48,7 @@ const articles: Record<string, Article> = {
     date: 'January 12, 2025',
     author: 'Sahana P R',
     readTime: '7 min read',
-    image: '/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/image-02.jpg',
+    image: '/images/image-02.jpg',
     content: [
       'There is something magical about practicing yoga in the early morning hours. The world is quiet, the mind is fresh, and the body is ready to be awakened. For beginners, establishing a morning yoga routine can be the most powerful step toward building a sustainable practice.',
       'The key to a successful morning practice is to start gently. Your body has been still for hours, and your muscles need time to warm up. Begin with a few minutes of conscious breathing, then move through some simple stretches to awaken the spine.',
@@ -58,9 +58,9 @@ const articles: Record<string, Article> = {
       'Join our online morning sessions where Dr. Srinatha guides beginners through gentle, effective sequences designed to build strength, flexibility, and confidence from day one.'
     ],
     relatedPosts: [
-      { slug: 'power-of-daily-meditation', title: 'The Power of Daily Meditation Practice', image: '/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/image-01.jpg', category: 'Meditation' },
-      { slug: 'nutrition-tips-for-yoga-practitioners', title: 'Nutrition Tips for Yoga Practitioners', image: '/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/image-01.jpg', category: 'Nutrition' },
-      { slug: 'breathing-techniques-for-stress-relief', title: 'Breathing Techniques for Stress Relief', image: '/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/image-03.jpg', category: 'Wellness' }
+      { slug: 'power-of-daily-meditation', title: 'The Power of Daily Meditation Practice', image: '/images/image-01.jpg', category: 'Meditation' },
+      { slug: 'nutrition-tips-for-yoga-practitioners', title: 'Nutrition Tips for Yoga Practitioners', image: '/images/image-01.jpg', category: 'Nutrition' },
+      { slug: 'breathing-techniques-for-stress-relief', title: 'Breathing Techniques for Stress Relief', image: '/images/image-03.jpg', category: 'Wellness' }
     ]
   },
   'breathing-techniques-for-stress-relief': {
@@ -70,7 +70,7 @@ const articles: Record<string, Article> = {
     date: 'January 10, 2025',
     author: 'Vinayaka Honnavar',
     readTime: '6 min read',
-    image: '/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/image-03.jpg',
+    image: '/images/image-03.jpg',
     content: [
       'Pranayama, or breath control, is one of the most powerful tools in the yogic toolkit for managing stress and anxiety. Unlike many other stress-relief techniques, pranayama can be practiced anywhere, at any time, with no equipment needed.',
       'The connection between breath and the nervous system is well-documented. When you are stressed, your breathing becomes shallow and rapid. By consciously slowing and deepening your breath, you send a signal to your nervous system that it is safe to relax.',
@@ -80,9 +80,9 @@ const articles: Record<string, Article> = {
       'These ancient techniques have been practiced for thousands of years for good reason. They work. And in our modern world of constant stimulation, they are more relevant than ever.'
     ],
     relatedPosts: [
-      { slug: 'power-of-daily-meditation', title: 'The Power of Daily Meditation Practice', image: '/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/image-01.jpg', category: 'Meditation' },
-      { slug: 'understanding-eight-limbs-of-yoga', title: 'Understanding the Eight Limbs of Yoga', image: '/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/hero-02.jpg', category: 'Philosophy' },
-      { slug: 'morning-yoga-routines-for-beginners', title: 'Morning Yoga Routines for Beginners', image: '/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/image-02.jpg', category: 'Yoga' }
+      { slug: 'power-of-daily-meditation', title: 'The Power of Daily Meditation Practice', image: '/images/image-01.jpg', category: 'Meditation' },
+      { slug: 'understanding-eight-limbs-of-yoga', title: 'Understanding the Eight Limbs of Yoga', image: '/images/hero-02.jpg', category: 'Philosophy' },
+      { slug: 'morning-yoga-routines-for-beginners', title: 'Morning Yoga Routines for Beginners', image: '/images/image-02.jpg', category: 'Yoga' }
     ]
   },
   'understanding-eight-limbs-of-yoga': {
@@ -92,7 +92,7 @@ const articles: Record<string, Article> = {
     date: 'January 8, 2025',
     author: 'Vinayaka Honnavar',
     readTime: '8 min read',
-    image: '/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/hero-02.jpg',
+    image: '/images/hero-02.jpg',
     content: [
       'When most people think of yoga, they think of physical postures. But asanas are just one of the eight limbs described by the sage Patanjali in the Yoga Sutras, written over 2,000 years ago. Understanding all eight limbs provides a complete framework for living a meaningful and purposeful life.',
       'The eight limbs are: Yama (ethical disciplines), Niyama (self-observances), Asana (physical postures), Pranayama (breath control), Pratyahara (withdrawal of senses), Dharana (concentration), Dhyana (meditation), and Samadhi (absorption or enlightenment).',
@@ -102,9 +102,9 @@ const articles: Record<string, Article> = {
       'In our philosophy classes, we explore each limb in depth, connecting ancient wisdom to modern life. Whether you are a complete beginner or an experienced practitioner, there is always more to discover in these timeless teachings.'
     ],
     relatedPosts: [
-      { slug: 'power-of-daily-meditation', title: 'The Power of Daily Meditation Practice', image: '/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/image-01.jpg', category: 'Meditation' },
-      { slug: 'breathing-techniques-for-stress-relief', title: 'Breathing Techniques for Stress Relief', image: '/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/image-03.jpg', category: 'Wellness' },
-      { slug: 'nutrition-tips-for-yoga-practitioners', title: 'Nutrition Tips for Yoga Practitioners', image: '/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/image-01.jpg', category: 'Nutrition' }
+      { slug: 'power-of-daily-meditation', title: 'The Power of Daily Meditation Practice', image: '/images/image-01.jpg', category: 'Meditation' },
+      { slug: 'breathing-techniques-for-stress-relief', title: 'Breathing Techniques for Stress Relief', image: '/images/image-03.jpg', category: 'Wellness' },
+      { slug: 'nutrition-tips-for-yoga-practitioners', title: 'Nutrition Tips for Yoga Practitioners', image: '/images/image-01.jpg', category: 'Nutrition' }
     ]
   },
   'nutrition-tips-for-yoga-practitioners': {
@@ -114,7 +114,7 @@ const articles: Record<string, Article> = {
     date: 'January 5, 2025',
     author: 'Sahana P R',
     readTime: '6 min read',
-    image: '/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/image-01.jpg',
+    image: '/images/image-01.jpg',
     content: [
       'In the yogic tradition, food is classified into three categories: Sattvic (pure and balanced), Rajasic (stimulating and aggressive), and Tamasic (dull and heavy). What you eat directly affects your mind, your practice, and your overall well-being.',
       'A Sattvic diet emphasizes fresh fruits, vegetables, whole grains, legumes, nuts, and seeds. These foods are light, nourishing, and promote clarity of mind. They are the foundation of a yogic diet and support both physical health and spiritual practice.',
@@ -124,9 +124,9 @@ const articles: Record<string, Article> = {
       'Remember, the goal is not perfection. It is awareness. Pay attention to how different foods make you feel — in your body, your mind, and your practice. Let that awareness guide your choices.'
     ],
     relatedPosts: [
-      { slug: 'morning-yoga-routines-for-beginners', title: 'Morning Yoga Routines for Beginners', image: '/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/image-02.jpg', category: 'Yoga' },
-      { slug: 'benefits-of-restorative-yoga', title: 'The Benefits of Restorative Yoga', image: '/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/image-02.jpg', category: 'Recovery' },
-      { slug: 'breathing-techniques-for-stress-relief', title: 'Breathing Techniques for Stress Relief', image: '/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/image-03.jpg', category: 'Wellness' }
+      { slug: 'morning-yoga-routines-for-beginners', title: 'Morning Yoga Routines for Beginners', image: '/images/image-02.jpg', category: 'Yoga' },
+      { slug: 'benefits-of-restorative-yoga', title: 'The Benefits of Restorative Yoga', image: '/images/image-02.jpg', category: 'Recovery' },
+      { slug: 'breathing-techniques-for-stress-relief', title: 'Breathing Techniques for Stress Relief', image: '/images/image-03.jpg', category: 'Wellness' }
     ]
   },
   'benefits-of-restorative-yoga': {
@@ -136,7 +136,7 @@ const articles: Record<string, Article> = {
     date: 'January 3, 2025',
     author: 'Ravi Prabhakar',
     readTime: '5 min read',
-    image: '/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/image-02.jpg',
+    image: '/images/image-02.jpg',
     content: [
       'In a culture that glorifies busyness and intensity, restorative yoga is a radical act of self-care. This gentle practice uses props — bolsters, blankets, blocks — to fully support the body in comfortable positions held for 5-20 minutes each.',
       'The purpose is not to stretch or strengthen but to activate the parasympathetic nervous system — the body\'s rest-and-digest response. In our modern world of chronic stress, this activation is not a luxury; it is a necessity.',
@@ -146,9 +146,9 @@ const articles: Record<string, Article> = {
       'If you have never tried restorative yoga, we invite you to join one of our sessions. You may be surprised at how challenging it is to simply be still — and how deeply rewarding that stillness can be.'
     ],
     relatedPosts: [
-      { slug: 'breathing-techniques-for-stress-relief', title: 'Breathing Techniques for Stress Relief', image: '/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/image-03.jpg', category: 'Wellness' },
-      { slug: 'power-of-daily-meditation', title: 'The Power of Daily Meditation Practice', image: '/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/image-01.jpg', category: 'Meditation' },
-      { slug: 'nutrition-tips-for-yoga-practitioners', title: 'Nutrition Tips for Yoga Practitioners', image: '/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/image-01.jpg', category: 'Nutrition' }
+      { slug: 'breathing-techniques-for-stress-relief', title: 'Breathing Techniques for Stress Relief', image: '/images/image-03.jpg', category: 'Wellness' },
+      { slug: 'power-of-daily-meditation', title: 'The Power of Daily Meditation Practice', image: '/images/image-01.jpg', category: 'Meditation' },
+      { slug: 'nutrition-tips-for-yoga-practitioners', title: 'Nutrition Tips for Yoga Practitioners', image: '/images/image-01.jpg', category: 'Nutrition' }
     ]
   }
 };

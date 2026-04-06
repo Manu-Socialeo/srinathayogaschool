@@ -4,21 +4,21 @@ export default function Blog() {
   const previews = [
     {
       slug: 'power-of-daily-meditation',
-      image: '/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/image-01.jpg',
+      image: '/images/image-01.jpg',
       category: 'Meditation',
       title: 'The Power of Daily Meditation Practice',
       excerpt: 'Discover how just 10 minutes of daily meditation can transform your mental clarity and reduce stress.',
     },
     {
       slug: 'morning-yoga-routines-for-beginners',
-      image: '/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/image-02.jpg',
+      image: '/images/image-02.jpg',
       category: 'Yoga',
       title: 'Morning Yoga Routines for Beginners',
       excerpt: 'Start your day right with these simple yet effective yoga sequences designed for those new to the practice.',
     },
     {
       slug: 'breathing-techniques-for-stress-relief',
-      image: '/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/image-03.jpg',
+      image: '/images/image-03.jpg',
       category: 'Wellness',
       title: 'Breathing Techniques for Stress Relief',
       excerpt: 'Learn powerful pranayama exercises that instantly calm your nervous system and manage anxiety.',

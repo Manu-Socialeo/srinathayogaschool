@@ -100,6 +100,9 @@ CREATE TABLE IF NOT EXISTS blog_posts (
   slug TEXT UNIQUE NOT NULL,
   body TEXT,
   image_url TEXT,
+  author TEXT,
+  category TEXT,
+  read_time TEXT,
   seo_title TEXT,
   seo_description TEXT,
   is_published BOOLEAN DEFAULT FALSE,
@@ -231,10 +234,10 @@ INSERT INTO testimonials (name, location, text, rating, is_featured) VALUES
 -- ============================================
 -- 11. SEED DATA (Sample Blog Posts)
 -- ============================================
-INSERT INTO blog_posts (title, slug, body, image_url, seo_title, seo_description, is_published, published_at) VALUES
-('The Power of Daily Meditation Practice', 'power-of-daily-meditation', 'In the ancient tradition of yoga, meditation (Dhyana) is considered the seventh limb...', '/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/image-01.jpg', 'Daily Meditation Practice | Srinatha Yoga', 'Discover how daily meditation transforms mental clarity and reduces stress.', TRUE, NOW()),
-('Morning Yoga Routines for Beginners', 'morning-yoga-routines-for-beginners', 'There is something magical about practicing yoga in the early morning hours...', '/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/image-02.jpg', 'Morning Yoga for Beginners | Srinatha Yoga', 'Start your day right with simple yet effective yoga sequences.', TRUE, NOW()),
-('Breathing Techniques for Stress Relief', 'breathing-techniques-for-stress-relief', 'Pranayama, or breath control, is one of the most powerful tools in the yogic toolkit...', '/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/image-03.jpg', 'Pranayama for Stress Relief | Srinatha Yoga', 'Learn powerful breathing exercises that instantly calm your nervous system.', TRUE, NOW());
+INSERT INTO blog_posts (title, slug, body, image_url, author, category, read_time, seo_title, seo_description, is_published, published_at) VALUES
+('The Power of Daily Meditation Practice', 'power-of-daily-meditation', 'In the ancient tradition of yoga, meditation (Dhyana) is considered the seventh limb...', '/images/image-01.jpg', 'Dr. Balasundara Srinatha', 'Meditation', '5 min read', 'Daily Meditation Practice | Srinatha Yoga', 'Discover how daily meditation transforms mental clarity and reduces stress.', TRUE, NOW()),
+('Morning Yoga Routines for Beginners', 'morning-yoga-routines-for-beginners', 'There is something magical about practicing yoga in the early morning hours...', '/images/image-02.jpg', 'Sahana P R', 'Yoga', '7 min read', 'Morning Yoga for Beginners | Srinatha Yoga', 'Start your day right with simple yet effective yoga sequences.', TRUE, NOW()),
+('Breathing Techniques for Stress Relief', 'breathing-techniques-for-stress-relief', 'Pranayama, or breath control, is one of the most powerful tools in the yogic toolkit...', '/images/image-03.jpg', 'Vinayaka Honnavar', 'Wellness', '6 min read', 'Pranayama for Stress Relief | Srinatha Yoga', 'Learn powerful breathing exercises that instantly calm your nervous system.', TRUE, NOW());
 
 -- ============================================
 -- 12. SEED DATA (Calendar Events)

@@ -20,17 +20,17 @@ export default function Hero() {
             <div className="inline-flex items-center gap-3 mb-4 opacity-0 animate-fade-in-up">
               <div className="flex -space-x-2">
                 <img 
-                  src="/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/avatar-01.jpg"
+                  src="/images/avatar-01.jpg"
                   alt="User"
                   className="w-10 h-10 rounded-full border-2 border-white object-cover"
                 />
                 <img 
-                  src="/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/avatar-02.jpg"
+                  src="/images/avatar-02.jpg"
                   alt="User"
                   className="w-10 h-10 rounded-full border-2 border-white object-cover"
                 />
                 <img 
-                  src="/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/avatar-03.jpg"
+                  src="/images/avatar-03.jpg"
                   alt="User"
                   className="w-10 h-10 rounded-full border-2 border-white object-cover"
                 />

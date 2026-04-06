@@ -71,7 +71,7 @@ export default function AboutPage() {
             <div className="relative group" data-aos="fade-right">
               <div className="absolute -inset-4 bg-teal-50 rounded-2xl -rotate-2 transition-transform group-hover:rotate-0 duration-500"></div>
               <img 
-                src="/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/hero-02.jpg" 
+                src="/images/hero-02.jpg" 
                 alt="Dr. Balasundara Srinatha" 
                 className="relative rounded-xl shadow-2xl w-full h-[600px] object-cover"
               />
@@ -186,7 +186,7 @@ export default function AboutPage() {
           <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             <div className="group" data-aos="fade-up" data-aos-delay="0">
               <div className="relative overflow-hidden rounded-3xl mb-6">
-                <img src="/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/image-01.jpg" alt="Retreat" className="w-full h-80 object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                <img src="/images/image-01.jpg" alt="Retreat" className="w-full h-80 object-cover transform group-hover:scale-110 transition-transform duration-700" />
                 <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors"></div>
               </div>
               <h4 className="text-xl font-bold mb-3">The Retreat Experience</h4>
@@ -197,7 +197,7 @@ export default function AboutPage() {
 
             <div className="group" data-aos="fade-up" data-aos-delay="100">
               <div className="relative overflow-hidden rounded-3xl mb-6">
-                <img src="/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/image-02.jpg" alt="Wellness" className="w-full h-80 object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                <img src="/images/image-02.jpg" alt="Wellness" className="w-full h-80 object-cover transform group-hover:scale-110 transition-transform duration-700" />
                 <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors"></div>
               </div>
               <h4 className="text-xl font-bold mb-3">Wellness & Spa</h4>
@@ -208,7 +208,7 @@ export default function AboutPage() {
 
             <div className="group" data-aos="fade-up" data-aos-delay="200">
               <div className="relative overflow-hidden rounded-3xl mb-6">
-                <img src="/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/image-03.jpg" alt="Food" className="w-full h-80 object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                <img src="/images/image-03.jpg" alt="Food" className="w-full h-80 object-cover transform group-hover:scale-110 transition-transform duration-700" />
                 <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors"></div>
               </div>
               <h4 className="text-xl font-bold mb-3">Delicious Food</h4>

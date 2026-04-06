@@ -8,7 +8,7 @@ import { useSEO } from '../../lib/useSEO';
 const articles = [
   {
     slug: 'power-of-daily-meditation',
-    image: '/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/image-01.jpg',
+    image: '/images/image-01.jpg',
     category: 'Meditation',
     date: 'January 15, 2025',
     title: 'The Power of Daily Meditation Practice',
@@ -18,7 +18,7 @@ const articles = [
   },
   {
     slug: 'morning-yoga-routines-for-beginners',
-    image: '/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/image-02.jpg',
+    image: '/images/image-02.jpg',
     category: 'Yoga',
     date: 'January 12, 2025',
     title: 'Morning Yoga Routines for Beginners',
@@ -28,7 +28,7 @@ const articles = [
   },
   {
     slug: 'breathing-techniques-for-stress-relief',
-    image: '/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/image-03.jpg',
+    image: '/images/image-03.jpg',
     category: 'Wellness',
     date: 'January 10, 2025',
     title: 'Breathing Techniques for Stress Relief',
@@ -38,7 +38,7 @@ const articles = [
   },
   {
     slug: 'understanding-eight-limbs-of-yoga',
-    image: '/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/hero-02.jpg',
+    image: '/images/hero-02.jpg',
     category: 'Philosophy',
     date: 'January 8, 2025',
     title: 'Understanding the Eight Limbs of Yoga',
@@ -48,7 +48,7 @@ const articles = [
   },
   {
     slug: 'nutrition-tips-for-yoga-practitioners',
-    image: '/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/image-01.jpg',
+    image: '/images/image-01.jpg',
     category: 'Nutrition',
     date: 'January 5, 2025',
     title: 'Nutrition Tips for Yoga Practitioners',
@@ -58,7 +58,7 @@ const articles = [
   },
   {
     slug: 'benefits-of-restorative-yoga',
-    image: '/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/image-02.jpg',
+    image: '/images/image-02.jpg',
     category: 'Recovery',
     date: 'January 3, 2025',
     title: 'The Benefits of Restorative Yoga',
@@ -109,7 +109,7 @@ export default function BlogPage() {
       {/* SEO Hero */}
       <section className="relative pt-40 pb-20 bg-gray-900 text-white overflow-hidden" data-aos="fade-up">
         <div className="absolute inset-0 opacity-20">
-          <img src="/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/image-01.jpg" className="w-full h-full object-cover" alt="" />
+          <img src="/images/image-01.jpg" className="w-full h-full object-cover" alt="" />
         </div>
         <div className="container mx-auto px-4 relative z-10 text-center">
           <h1 className="text-4xl md:text-6xl font-bold mb-4">Blog</h1>

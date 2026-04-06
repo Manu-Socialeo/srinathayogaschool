@@ -69,10 +69,24 @@ export interface BlogPost {
   slug: string;
   body: string;
   image_url?: string;
+  author?: string;
+  category?: string;
+  read_time?: string;
   seo_title?: string;
   seo_description?: string;
   is_published: boolean;
   published_at?: string;
+  created_at: string;
+}
+
+export interface Testimonial {
+  id: string;
+  name: string;
+  location?: string;
+  text: string;
+  rating: number;
+  image_url?: string;
+  is_featured: boolean;
   created_at: string;
 }
 

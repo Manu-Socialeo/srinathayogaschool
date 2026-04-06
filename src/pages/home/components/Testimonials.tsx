@@ -35,35 +35,35 @@ export default function Testimonials() {
       location: 'Stockholm, Sweden',
       text: 'The sessions completely transformed my mindset. Dr. Srinatha\'s teaching is rooted in authentic tradition yet incredibly accessible. I\'ve never felt this balanced and at peace in my daily life.',
       rating: 5,
-      image: '/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/customer-avatar-01.jpg'
+      image: '/images/customer-avatar-01.jpg'
     },
     {
       name: 'James Mitchell',
       location: 'London, UK',
       text: 'After 6 months of online classes, my flexibility and strength have improved dramatically. The personalized attention in virtual sessions is remarkable. Highly recommend for anyone serious about yoga.',
       rating: 5,
-      image: '/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/avatar-02.jpg'
+      image: '/images/avatar-02.jpg'
     },
     {
       name: 'Yuki Tanaka',
       location: 'Tokyo, Japan',
       text: 'Learning Ashtanga yoga from Mysore through online classes seemed impossible, but Dr. Srinatha makes it feel like I\'m right there in his shala. The depth of knowledge and patience is extraordinary.',
       rating: 5,
-      image: '/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/avatar-03.jpg'
+      image: '/images/avatar-03.jpg'
     },
     {
       name: 'Sarah Williams',
       location: 'New York, USA',
       text: 'The workshop on pranayama was a life-changing experience. I came in as a skeptic and left as a believer. The breathing techniques have helped me manage anxiety in ways I never thought possible.',
       rating: 5,
-      image: '/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/avatar-01.jpg'
+      image: '/images/avatar-01.jpg'
     },
     {
       name: 'Marco Rossi',
       location: 'Milan, Italy',
       text: 'I\'ve practiced yoga for 10 years across multiple studios worldwide. Nothing compares to the authenticity and depth of teaching at Srinatha Yoga School. It\'s the real deal from the source.',
       rating: 5,
-      image: '/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/avatar-02.jpg'
+      image: '/images/avatar-02.jpg'
     }
   ];
 

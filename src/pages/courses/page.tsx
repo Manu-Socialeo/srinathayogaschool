@@ -11,28 +11,28 @@ const courses = [
     title: 'Ashtanga Yoga',
     description: 'A dynamic and physically demanding style of yoga that follows a specific sequence of postures. It focuses on synchronizing breath with movement to produce internal heat and detoxify the body.',
     benefits: ['Improves strength and flexibility', 'Increases stamina', 'Calms the mind', 'Detoxifies through heat'],
-    image: '/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/image-01.jpg'
+    image: '/images/image-01.jpg'
   },
   {
     id: 'hatha',
     title: 'Hatha Yoga',
     description: 'A foundational practice that focuses on physical postures (asanas) and breathing techniques (pranayama). It is typically practiced at a slower pace, making it perfect for beginners and those seeking balance.',
     benefits: ['Enhances physical vitality', 'Promotes mental clarity', 'Reduces stress', 'Improves body awareness'],
-    image: '/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/image-02.jpg'
+    image: '/images/image-02.jpg'
   },
   {
     id: 'iyengar',
     title: 'Iyengar Yoga',
     description: 'Known for its emphasis on detail, precision, and alignment in the performance of postures. This style often uses props such as belts, blocks, and blankets to help students perform postures correctly.',
     benefits: ['Corrects posture and alignment', 'Safe for injury recovery', 'Builds deep strength', 'Develops focus and discipline'],
-    image: '/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/image-03.jpg'
+    image: '/images/image-03.jpg'
   },
   {
     id: 'vinyasa',
     title: 'Vinyasa Yoga',
     description: 'A style of yoga characterized by stringing postures together so that you move from one to another, seamlessly, using breath. It is often referred to as "flow" yoga due to smooth transitions.',
     benefits: ['Cardiovascular workout', 'Creative movement patterns', 'Relieves anxiety', 'Strengthens the whole body'],
-    image: '/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/hero-01.jpg'
+    image: '/images/hero-01.jpg'
   }
 ];
 
@@ -87,7 +87,7 @@ export default function CoursesPage() {
         </div>
         <div className="absolute inset-0 opacity-20 pointer-events-none">
           <img 
-            src="/pixelperfectthemes.com/demos/themes/medit/wp-content/themes/medit/assets/img/hero-02.jpg" 
+            src="/images/hero-02.jpg" 
             alt="Background" 
             className="w-full h-full object-cover" 
           />
