@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import LanguageSwitcher from './LanguageSwitcher';
 
 interface HeaderProps {
@@ -8,6 +9,7 @@ interface HeaderProps {
 
 export default function Header({ isScrolled }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { user, signOut } = useAuth();
   const location = useLocation();
   const isHome = location.pathname === '/';
 
@@ -21,6 +23,7 @@ export default function Header({ isScrolled }: HeaderProps) {
   ];
 
   const textColor = isScrolled ? 'text-gray-900' : 'text-white';
+  const borderColor = isScrolled ? 'border-gray-300' : 'border-white/30';
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-sm shadow-sm' : 'bg-transparent'}`}>
@@ -56,9 +59,40 @@ export default function Header({ isScrolled }: HeaderProps) {
             })}
           </nav>
 
-          {/* Right: Language + Book Now + Hamburger */}
-          <div className="flex items-center gap-3">
+          {/* Right: Language + User/Login + Book Now + Hamburger */}
+          <div className="flex items-center gap-2">
             <LanguageSwitcher isScrolled={isScrolled} />
+            
+            {user ? (
+              <div className="flex items-center gap-2">
+                <Link
+                  to="/dashboard"
+                  className={`hidden xl:flex items-center gap-2 px-3 py-2 rounded-lg border transition-all text-sm font-medium ${borderColor} ${textColor} hover:bg-white/10`}
+                >
+                  <div className="w-7 h-7 bg-teal-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                    {(user.name || user.email || 'U').charAt(0).toUpperCase()}
+                  </div>
+                  <span className="hidden lg:block">Dashboard</span>
+                </Link>
+                <button
+                  onClick={() => signOut()}
+                  className={`hidden xl:flex items-center gap-2 px-3 py-2 rounded-lg border transition-all text-sm font-medium ${borderColor} ${textColor} hover:bg-white/10`}
+                  title="Sign out"
+                >
+                  <i className="ri-logout-box-line"></i>
+                  <span className="hidden lg:block">Logout</span>
+                </button>
+              </div>
+            ) : (
+              <Link
+                to="/login"
+                className={`hidden xl:flex items-center gap-2 px-4 py-2 rounded-lg border transition-all text-sm font-medium ${borderColor} ${textColor} hover:bg-white/10`}
+              >
+                <i className="ri-user-line"></i>
+                <span>Sign In</span>
+              </Link>
+            )}
+
             <Link
               to="/courses"
               className="hidden xl:inline-block bg-teal-500 text-white px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-teal-600 transition-all shadow-lg shadow-teal-500/20 hover:-translate-y-0.5 transform"
@@ -87,7 +121,28 @@ export default function Header({ isScrolled }: HeaderProps) {
             }
             return <a key={link.label} href={link.to} className={cls} onClick={() => setMobileMenuOpen(false)}>{link.label}</a>;
           })}
-          <div className="pt-4 border-t border-gray-100 mt-2">
+          
+          {/* Mobile User Section */}
+          <div className="pt-4 border-t border-gray-100 mt-2 space-y-2">
+            {user ? (
+              <>
+                <Link to="/dashboard" className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-50" onClick={() => setMobileMenuOpen(false)}>
+                  <div className="w-8 h-8 bg-teal-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                    {(user.name || user.email || 'U').charAt(0).toUpperCase()}
+                  </div>
+                  <span className="font-medium">Dashboard</span>
+                </Link>
+                <button onClick={() => { signOut(); setMobileMenuOpen(false); }} className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-50 w-full text-left">
+                  <i className="ri-logout-box-line"></i>
+                  <span className="font-medium">Logout</span>
+                </button>
+              </>
+            ) : (
+              <Link to="/login" className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-50" onClick={() => setMobileMenuOpen(false)}>
+                <i className="ri-user-line"></i>
+                <span className="font-medium">Sign In</span>
+              </Link>
+            )}
             <Link to="/courses" className="block w-full text-center bg-teal-500 text-white px-6 py-3 rounded-lg text-sm font-semibold hover:bg-teal-600 transition-colors" onClick={() => setMobileMenuOpen(false)}>
               Book Now
             </Link>

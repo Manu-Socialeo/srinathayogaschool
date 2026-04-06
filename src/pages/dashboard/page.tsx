@@ -6,6 +6,8 @@ import Footer from '../../components/Footer';
 import WhatsAppButton from '../../components/WhatsAppButton';
 import { useAuth } from '../../context/AuthContext';
 import { useSEO } from '../../lib/useSEO';
+import { supabase } from '../../lib/supabase';
+import type { Booking as BookingType, Course, Payment as PaymentType } from '../../lib/types';
 
 interface UpcomingClass {
   id: number;
@@ -25,15 +27,6 @@ interface Activity {
   instructor: string;
 }
 
-interface Payment {
-  id: number;
-  date: string;
-  course: string;
-  amount: string;
-  method: string;
-  status: 'paid' | 'pending';
-}
-
 const upcomingClasses: UpcomingClass[] = [
   { id: 1, title: 'Ashtanga Vinyasa Flow', date: 'Apr 07, 2026', time: '6:00 AM - 7:30 AM', instructor: 'Dr. Srinatha', type: 'Intermediate', zoomLink: '#' },
   { id: 2, title: 'Hatha Yoga Basics', date: 'Apr 08, 2026', time: '7:00 AM - 8:00 AM', instructor: 'Sahana P R', type: 'Beginner', zoomLink: '#' },
@@ -48,17 +41,15 @@ const recentActivity: Activity[] = [
   { id: 4, title: 'Vinyasa Flow', date: 'Mar 29, 2026', duration: '75 min', instructor: 'Hrishanth' },
 ];
 
-const paymentHistory: Payment[] = [
-  { id: 1, date: 'Apr 01, 2026', course: 'Ashtanga Primary Series', amount: '$150.00', method: 'PayPal', status: 'paid' },
-  { id: 2, date: 'Mar 15, 2026', course: 'Hatha Yoga Foundations', amount: '$15.00', method: 'Razorpay', status: 'paid' },
-  { id: 3, date: 'Mar 01, 2026', course: 'Pranayama Workshop', amount: '$80.00', method: 'PayPal', status: 'paid' },
-];
-
 export default function Dashboard() {
   const { user, loading, signOut, isAdmin } = useAuth();
   const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeTab, setActiveTab] = useState<'upcoming' | 'history' | 'payments'>('upcoming');
+  const [bookings, setBookings] = useState<BookingType[]>([]);
+  const [courses, setCourses] = useState<Course[]>([]);
+  const [payments, setPayments] = useState<PaymentType[]>([]);
+  const [loadingData, setLoadingData] = useState(true);
 
   useSEO({
     title: 'My Dashboard — Student Portal',
@@ -74,7 +65,45 @@ export default function Dashboard() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  if (loading) {
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!user) return;
+      
+      setLoadingData(true);
+      try {
+        const { data: bookingsData } = await supabase
+          .from('bookings')
+          .select('*, course:courses(*)')
+          .eq('user_id', user.id)
+          .order('created_at', { ascending: false });
+        
+        const { data: coursesData } = await supabase
+          .from('courses')
+          .select('*')
+          .eq('is_active', true)
+          .order('start_date', { ascending: true });
+        
+        if (bookingsData) setBookings(bookingsData);
+        if (coursesData) setCourses(coursesData);
+        
+        const { data: paymentsData } = await supabase
+          .from('payments')
+          .select('*')
+          .order('created_at', { ascending: false })
+          .limit(10);
+        
+        if (paymentsData) setPayments(paymentsData);
+      } catch (error) {
+        console.log('Using demo data (Supabase not connected)');
+      } finally {
+        setLoadingData(false);
+      }
+    };
+    
+    if (user) fetchData();
+  }, [user]);
+
+  if (loading || loadingData) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
@@ -144,30 +173,30 @@ export default function Dashboard() {
               </div>
               <span className="text-xs font-semibold text-teal-600 bg-teal-50 px-3 py-1 rounded-full">This Week</span>
             </div>
-            <p className="text-3xl font-bold text-gray-900">4</p>
-            <p className="text-gray-500 text-sm mt-1">Upcoming Classes</p>
+            <p className="text-3xl font-bold text-gray-900">{bookings.length}</p>
+            <p className="text-gray-500 text-sm mt-1">Total Bookings</p>
           </div>
 
           <div className="bg-white rounded-2xl shadow-lg shadow-gray-200/50 p-6 border border-gray-100 hover:-translate-y-1 transition-transform duration-300" data-aos="fade-up" data-aos-delay="100">
             <div className="flex items-center justify-between mb-4">
               <div className="w-12 h-12 bg-cyan-100 rounded-xl flex items-center justify-center">
-                <i className="ri-time-line text-cyan-600 text-2xl"></i>
+                <i className="ri-money-dollar-circle-line text-cyan-600 text-2xl"></i>
               </div>
               <span className="text-xs font-semibold text-cyan-600 bg-cyan-50 px-3 py-1 rounded-full">Total</span>
             </div>
-            <p className="text-3xl font-bold text-gray-900">48</p>
-            <p className="text-gray-500 text-sm mt-1">Total Hours Practiced</p>
+            <p className="text-3xl font-bold text-gray-900">${payments.filter(p => p.status === 'paid').reduce((sum, p) => sum + Number(p.amount), 0)}</p>
+            <p className="text-gray-500 text-sm mt-1">Total Spent</p>
           </div>
 
           <div className="bg-white rounded-2xl shadow-lg shadow-gray-200/50 p-6 border border-gray-100 hover:-translate-y-1 transition-transform duration-300" data-aos="fade-up" data-aos-delay="200">
             <div className="flex items-center justify-between mb-4">
               <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center">
-                <i className="ri-fire-line text-emerald-600 text-2xl"></i>
+                <i className="ri-book-open-line text-emerald-600 text-2xl"></i>
               </div>
               <span className="text-xs font-semibold text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full">Active</span>
             </div>
-            <p className="text-3xl font-bold text-gray-900">12</p>
-            <p className="text-gray-500 text-sm mt-1">Current Streak (Days)</p>
+            <p className="text-3xl font-bold text-gray-900">{courses.length}</p>
+            <p className="text-gray-500 text-sm mt-1">Available Courses</p>
           </div>
 
           <div className="bg-white rounded-2xl shadow-lg shadow-gray-200/50 p-6 border border-gray-100 hover:-translate-y-1 transition-transform duration-300" data-aos="fade-up" data-aos-delay="300">
@@ -177,8 +206,8 @@ export default function Dashboard() {
               </div>
               <span className="text-xs font-semibold text-orange-600 bg-orange-50 px-3 py-1 rounded-full">Next</span>
             </div>
-            <p className="text-lg font-bold text-gray-900">Tomorrow, 6:00 AM</p>
-            <p className="text-gray-500 text-sm mt-1">Next Session</p>
+            <p className="text-lg font-bold text-gray-900">{courses[0] ? new Date(courses[0].start_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'N/A'}</p>
+            <p className="text-gray-500 text-sm mt-1">Next Course Start</p>
           </div>
         </div>
       </section>
@@ -297,25 +326,36 @@ export default function Dashboard() {
                     </h2>
                   </div>
                   <div className="divide-y divide-gray-100">
-                    {paymentHistory.map((p) => (
+                    {payments.length > 0 ? payments.map((p) => (
                       <div key={p.id} className="px-6 py-5 hover:bg-gray-50 transition-colors">
                         <div className="flex items-center justify-between">
                           <div>
-                            <h3 className="font-semibold text-gray-900">{p.course}</h3>
+                            <h3 className="font-semibold text-gray-900">{p.id}</h3>
                             <div className="flex items-center gap-x-4 mt-1 text-sm text-gray-500">
-                              <span className="flex items-center gap-1"><i className="ri-calendar-line"></i> {p.date}</span>
+                              <span className="flex items-center gap-1"><i className="ri-calendar-line"></i> {new Date(p.created_at).toLocaleDateString()}</span>
                               <span className="flex items-center gap-1"><i className="ri-bank-card-line"></i> {p.method}</span>
                             </div>
                           </div>
                           <div className="text-right">
-                            <p className="font-bold text-gray-900">{p.amount}</p>
+                            <p className="font-bold text-gray-900">${p.amount} {p.currency}</p>
                             <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${p.status === 'paid' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}`}>
                               {p.status === 'paid' ? 'Paid' : 'Pending'}
                             </span>
                           </div>
                         </div>
                       </div>
-                    ))}
+                    )) : (
+                      <div className="px-6 py-12 text-center">
+                        <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                          <i className="ri-bank-card-line text-3xl text-gray-400"></i>
+                        </div>
+                        <h3 className="font-semibold text-gray-900 mb-2">No payments yet</h3>
+                        <p className="text-gray-500 text-sm mb-4">Book a course to see your payment history here.</p>
+                        <Link to="/courses" className="inline-flex items-center gap-2 bg-teal-500 text-white px-6 py-2.5 rounded-xl font-semibold hover:bg-teal-600 transition-all">
+                          Browse Courses
+                        </Link>
+                      </div>
+                    )}
                   </div>
                 </>
               )}

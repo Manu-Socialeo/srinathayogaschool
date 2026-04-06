@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 
 export default function Footer() {
-  const waMessage = encodeURIComponent("Hi! I want to get my website built by Socialeo.");
-  const waLink = `https://wa.me/918722163256?text=${waMessage}`;
+  const waMessage = encodeURIComponent("Hi! I'm interested in learning more about Srinatha Yoga School's online classes.");
+  const waLink = `https://wa.me/919886512083?text=${waMessage}`;
 
   return (
     <footer id="contact" className="bg-[#1a1f2c] text-white pt-20 pb-0">

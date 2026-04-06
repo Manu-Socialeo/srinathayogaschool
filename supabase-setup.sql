@@ -2,6 +2,15 @@
 -- Run this SQL in your Supabase SQL Editor to create all tables, policies, and functions.
 
 -- ============================================
+-- 0. SEED ADMIN USER
+-- ============================================
+-- NOTE: Admin users are created automatically when they first sign in with Google.
+-- After you sign in for the first time, run this command to make yourself admin:
+-- UPDATE users SET role = 'admin' WHERE email = 'your-email@gmail.com';
+--
+-- To find your email after logging in, check the users table or console logs.
+
+-- ============================================
 -- 1. USERS TABLE (extends auth.users)
 -- ============================================
 CREATE TABLE IF NOT EXISTS users (
@@ -137,6 +146,22 @@ CREATE TABLE IF NOT EXISTS testimonials (
 );
 
 -- ============================================
+-- 8. TEACHERS TABLE
+-- ============================================
+CREATE TABLE IF NOT EXISTS teachers (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  name TEXT NOT NULL,
+  title TEXT,
+  bio TEXT,
+  image_url TEXT,
+  specialization TEXT,
+  experience_years INTEGER,
+  is_active BOOLEAN DEFAULT TRUE,
+  display_order INTEGER DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- ============================================
 -- ROW LEVEL SECURITY (RLS) POLICIES
 -- ============================================
 ALTER TABLE users ENABLE ROW LEVEL SECURITY;
@@ -146,6 +171,7 @@ ALTER TABLE payments ENABLE ROW LEVEL SECURITY;
 ALTER TABLE blog_posts ENABLE ROW LEVEL SECURITY;
 ALTER TABLE calendar_events ENABLE ROW LEVEL SECURITY;
 ALTER TABLE testimonials ENABLE ROW LEVEL SECURITY;
+ALTER TABLE teachers ENABLE ROW LEVEL SECURITY;
 
 -- Users: can read own profile, admins can read all
 CREATE POLICY "Users can view own profile" ON users FOR SELECT USING (auth.uid() = id);

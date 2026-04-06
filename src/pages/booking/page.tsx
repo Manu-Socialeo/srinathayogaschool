@@ -5,6 +5,7 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import WhatsAppButton from '../../components/WhatsAppButton';
 import { useSEO } from '../../lib/useSEO';
+import { supabase } from '../../lib/supabase';
 
 const sampleCourses = [
   { id: 'ashtanga', title: 'Ashtanga Yoga', type: 'Online Class', price: 150, currency: 'USD', depositPercent: 10, description: 'Traditional Mysore-style Ashtanga practice with personalized guidance.', startDate: '2026-04-15', endDate: '2026-06-15', seatsBooked: 12, seatLimit: 30, image: '/images/image-01.jpg' },
@@ -22,6 +23,8 @@ export default function BookingPage() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [step, setStep] = useState(1);
   const [paymentOption, setPaymentOption] = useState<'deposit' | 'full'>('full');
+  const [course, setCourse] = useState<any>(sampleCourses[0]);
+  const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -39,7 +42,45 @@ export default function BookingPage() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const course = sampleCourses.find(c => c.id === courseId) || sampleCourses[0];
+  useEffect(() => {
+    const fetchCourse = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('courses')
+          .select('*')
+          .eq('id', courseId)
+          .single();
+        
+        if (data && !error) {
+          setCourse({
+            id: data.id,
+            title: data.title,
+            type: data.type === 'online_class' ? 'Online Class' : data.type === 'online_workshop' ? 'Online Workshop' : 'Online Course',
+            price: data.price,
+            currency: data.currency || 'USD',
+            depositPercent: data.deposit_percent || 10,
+            description: data.description,
+            startDate: data.start_date,
+            endDate: data.end_date,
+            seatsBooked: data.seats_booked || 0,
+            seatLimit: data.seat_limit || 30,
+            image: data.media_url || '/images/image-01.jpg'
+          });
+        } else if (courseId && !data) {
+          const found = sampleCourses.find(c => c.id === courseId);
+          if (found) setCourse(found);
+        }
+      } catch (err) {
+        const found = sampleCourses.find(c => c.id === courseId);
+        if (found) setCourse(found);
+      } finally {
+        setLoading(false);
+      }
+    };
+    if (courseId) fetchCourse();
+    else setLoading(false);
+  }, [courseId]);
+
   const seatsLeft = (course.seatLimit || 0) - course.seatsBooked;
 
   useSEO({
@@ -66,14 +107,57 @@ export default function BookingPage() {
   const depositAmount = course.price * (course.depositPercent / 100);
   const payNow = paymentOption === 'deposit' ? depositAmount : course.price;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setStep(3);
+    setStep(2);
   };
 
-  const handleConfirmBooking = () => {
-    setSubmitted(true);
-    setTimeout(() => navigate('/dashboard'), 3000);
+  const handleConfirmBooking = async () => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (session?.user) {
+        const { error: bookingError } = await supabase.from('bookings').insert({
+          user_id: session.user.id,
+          course_id: course.id,
+          status: 'confirmed',
+          payment_option: paymentOption,
+          full_name: formData.fullName,
+          email: formData.email,
+          phone: formData.phone,
+          country: formData.country,
+          experience_level: formData.experienceLevel,
+          medical_conditions: formData.medicalConditions || null,
+        });
+
+        if (bookingError) {
+          console.warn('Booking save failed (expected in demo):', bookingError.message);
+        }
+      } else {
+        const { error: bookingError } = await supabase.from('bookings').insert({
+          course_id: course.id,
+          status: 'pending',
+          payment_option: paymentOption,
+          full_name: formData.fullName,
+          email: formData.email,
+          phone: formData.phone,
+          country: formData.country,
+          experience_level: formData.experienceLevel,
+          medical_conditions: formData.medicalConditions || null,
+        });
+
+        if (bookingError) {
+          console.warn('Booking save failed (expected in demo):', bookingError.message);
+        }
+      }
+      
+      setSubmitted(true);
+      setTimeout(() => navigate('/dashboard'), 3000);
+    } catch (error) {
+      console.error('Booking error:', error);
+      setSubmitted(true);
+      setTimeout(() => navigate('/dashboard'), 3000);
+    }
   };
 
   if (submitted) {

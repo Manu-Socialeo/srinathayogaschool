@@ -32,6 +32,7 @@ export interface Course {
   media_url?: string;
   is_active: boolean;
   created_at: string;
+  benefits?: string[];
 }
 
 export interface Booking {

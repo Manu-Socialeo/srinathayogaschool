@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import AOS from 'aos';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import WhatsAppButton from '../../components/WhatsAppButton';
 import { useAuth } from '../../context/AuthContext';
 import { useSEO } from '../../lib/useSEO';
+import AnalyticsDashboard from '../../components/admin/AnalyticsDashboard';
 
 const sampleBookings = [
   { id: 1, name: 'John Doe', email: 'john@example.com', course: 'Ashtanga Yoga', date: 'Apr 15, 2026', status: 'confirmed', amount: '$150.00', method: 'PayPal', country: 'United States' },
@@ -24,9 +25,10 @@ const samplePayments = [
 ];
 
 export default function AdminDashboard() {
-  const { user, loading } = useAuth();
+  const { user, loading, isAdmin } = useAuth();
+  const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
-  const [activeTab, setActiveTab] = useState<'overview' | 'bookings' | 'payments' | 'courses' | 'users' | 'blog'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'bookings' | 'payments' | 'courses' | 'users' | 'blog' | 'analytics'>('overview');
 
   useSEO({
     title: 'Admin Panel — Management Dashboard',
@@ -42,8 +44,33 @@ export default function AdminDashboard() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate('/login');
+    } else if (!loading && user && !isAdmin) {
+      navigate('/dashboard');
+    }
+  }, [user, loading, isAdmin, navigate]);
+
   if (loading) {
     return <div className="min-h-screen bg-gray-900 flex items-center justify-center"><div className="w-16 h-16 border-4 border-teal-500 border-t-transparent rounded-full animate-spin"></div></div>;
+  }
+
+  if (!user || !isAdmin) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+        <div className="text-center max-w-md">
+          <div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <i className="ri-forbid-line text-4xl text-red-500"></i>
+          </div>
+          <h1 className="text-2xl font-bold mb-3">Access Denied</h1>
+          <p className="text-gray-500 mb-8">You don't have permission to access this page.</p>
+          <Link to="/dashboard" className="bg-teal-500 text-white px-8 py-3 rounded-xl font-semibold hover:bg-teal-600 transition-all">
+            Go to Dashboard
+          </Link>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -74,6 +101,7 @@ export default function AdminDashboard() {
           <div className="flex gap-1 overflow-x-auto py-2 no-scrollbar">
             {[
               { key: 'overview' as const, label: 'Overview', icon: 'ri-dashboard-line' },
+              { key: 'analytics' as const, label: 'Analytics', icon: 'ri-line-chart-line' },
               { key: 'bookings' as const, label: 'Bookings', icon: 'ri-calendar-check-line' },
               { key: 'payments' as const, label: 'Payments', icon: 'ri-bank-card-line' },
               { key: 'courses' as const, label: 'Courses', icon: 'ri-book-open-line' },
@@ -157,6 +185,11 @@ export default function AdminDashboard() {
               </div>
             </div>
           </div>
+        )}
+
+        {/* Analytics */}
+        {activeTab === 'analytics' && (
+          <AnalyticsDashboard isAdminView={true} />
         )}
 
         {/* Bookings */}
