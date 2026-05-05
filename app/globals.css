@@ -1,0 +1,172 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --background: #FFFFFF;
+  --foreground: #1a1a1a;
+  --card: #FFFFFF;
+  --card-foreground: #1a1a1a;
+  --popover: #FFFFFF;
+  --popover-foreground: #1a1a1a;
+  --primary: #264020;
+  --primary-foreground: #FFFFFF;
+  --secondary: #FAF8F5;
+  --secondary-foreground: #264020;
+  --muted: #FAF8F5;
+  --muted-foreground: #6b7280;
+  --accent: #264020;
+  --accent-foreground: #FFFFFF;
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.577 0.245 27.325);
+  --border: #E5E5E5;
+  --input: #E5E5E5;
+  --ring: #264020;
+  --radius: 0.75rem;
+  
+  /* Satvic color palette */
+  --satvic-green: #264020;
+  --satvic-green-light: #3a5a30;
+  --satvic-green-dark: #1a2d16;
+  --cream: #FAF8F5;
+  --cream-dark: #F5F0E8;
+}
+
+@theme inline {
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-serif: var(--font-playfair), Georgia, serif;
+  --font-mono: 'Geist Mono', monospace;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  
+  /* Satvic theme */
+  --color-satvic-green: var(--satvic-green);
+  --color-satvic-green-light: var(--satvic-green-light);
+  --color-satvic-green-dark: var(--satvic-green-dark);
+  --color-cream: var(--cream);
+  --color-cream-dark: var(--cream-dark);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--cream);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--satvic-green);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--satvic-green-light);
+}
+
+/* Satvic card hover effect */
+.satvic-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.satvic-card:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 12px 40px rgba(38, 64, 32, 0.15);
+}
+
+/* Smooth animations */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s ease-out forwards;
+}
+
+/* Rounded elements globally */
+.rounded-card {
+  @apply rounded-xl;
+}
+
+.rounded-button {
+  @apply rounded-lg;
+}
+
+.rounded-section {
+  @apply rounded-2xl;
+}
+
+.rounded-image {
+  @apply rounded-xl;
+}
+
+/* Apply to buttons globally */
+button, .btn {
+  @apply rounded-lg;
+}
+
+/* Apply to cards and containers */
+div[class*="card"], section, article {
+  @apply rounded-xl;
+}
+
+/* Images */
+img {
+  @apply rounded-lg;
+}
+
+/* Input fields */
+input, textarea, select {
+  @apply rounded-lg;
+}
+
+/* All main containers and sections */
+main > section {
+  @apply rounded-2xl;
+}
+
+/* Course cards and product cards */
+main section div[class*="grid"] > div,
+.motion-div,
+.bg-white.rounded {
+  @apply rounded-xl;
+}
