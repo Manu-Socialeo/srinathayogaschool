@@ -1,11 +1,13 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
 import { Loader2, FileText, Download, Headphones, Video, ChevronLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { createBrowserClient } from '@/lib/supabase'
+import { useAuth } from '@/components/auth-provider'
 import type { Database } from '@/lib/supabase-types'
 
 type TTCResource = Database['public']['Tables']['ttc_resources']['Row']
@@ -17,10 +19,14 @@ const typeConfig = {
 } as const
 
 export default function ResourcesPage() {
+  const router = useRouter()
+  const { user, loading: authLoading } = useAuth()
   const [loading, setLoading] = useState(true)
   const [resources, setResources] = useState<TTCResource[]>([])
 
   useEffect(() => {
+    if (authLoading) return
+    if (!user) { router.push('/dashboard/login'); return }
     async function load() {
       const supabase = createBrowserClient()
       const { data } = await supabase
@@ -31,7 +37,7 @@ export default function ResourcesPage() {
       setLoading(false)
     }
     load()
-  }, [])
+  }, [user, authLoading, router])
 
   if (loading) return (
     <div className="min-h-screen bg-[#FAF8F5] flex items-center justify-center">

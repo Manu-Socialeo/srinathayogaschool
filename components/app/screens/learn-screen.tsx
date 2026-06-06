@@ -7,18 +7,22 @@ import { Search, Filter, X } from 'lucide-react'
 import { SectionHeader, HorizontalScroll } from '@/components/app/section'
 import { CourseCard } from '@/components/app/course-card'
 import { EmptySearchState, EmptyCoursesState, LoadingScreen } from '@/components/app/ui-states'
-import { fetchCourses, fetchCategories } from '@/lib/supabase-queries'
+import { fetchCourses, fetchCategories, getEnrollments } from '@/lib/supabase-queries'
+import { useAuth } from '@/components/auth-provider'
 import type { Course, Category } from '@/lib/app-data'
 import { cn } from '@/lib/utils'
 
 export function LearnScreen() {
   const router = useRouter()
+  const { profile } = useAuth()
   const [activeCategory, setActiveCategory] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
   const [isSearchFocused, setIsSearchFocused] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [courses, setCourses] = useState<Course[]>([])
   const [categories, setCategories] = useState<Category[]>([])
+  const [enrolledIds, setEnrolledIds] = useState<Set<string>>(new Set())
+  const [enrollments, setEnrollments] = useState<Map<string, number>>(new Map())
 
   useEffect(() => {
     Promise.all([fetchCourses(), fetchCategories()])
@@ -30,7 +34,28 @@ export function LearnScreen() {
       .catch(() => setIsLoading(false))
   }, [])
 
-  const purchasedCourses = useMemo(() => courses.filter(c => c.isPurchased), [courses])
+  useEffect(() => {
+    if (!profile?.id) return
+    getEnrollments(profile.id).then(enrolls => {
+      const ids = new Set<string>()
+      const progress = new Map<string, number>()
+      enrolls.forEach(e => {
+        ids.add(e.course_id)
+        progress.set(e.course_id, e.progress)
+      })
+      setEnrolledIds(ids)
+      setEnrollments(progress)
+    })
+  }, [profile?.id])
+
+  const purchasedCourses = useMemo(() =>
+    courses.filter(c => enrolledIds.has(c.id)).map(c => ({
+      ...c,
+      isPurchased: true,
+      progress: enrollments.get(c.id) ?? 0,
+    })),
+    [courses, enrolledIds, enrollments]
+  )
   const continueLearning = useMemo(() =>
     purchasedCourses.filter(c => c.progress && c.progress > 0 && c.progress < 100),
     [purchasedCourses]
@@ -49,8 +74,8 @@ export function LearnScreen() {
   }), [activeCategory, searchQuery, courses])
 
   const browseCoursesFiltered = useMemo(() =>
-    filteredCourses.filter(c => !c.isPurchased),
-    [filteredCourses]
+    filteredCourses.filter(c => !enrolledIds.has(c.id)),
+    [filteredCourses, enrolledIds]
   )
 
   const clearSearch = () => {

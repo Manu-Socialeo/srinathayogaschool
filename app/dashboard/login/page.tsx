@@ -22,6 +22,7 @@ function LoginForm() {
     setError("")
     try {
       await signInWithEmail(email, password)
+      try { const { default: posthog } = await import('posthog-js'); posthog.capture('login', { method: 'email' }) } catch {}
       router.push(redirect)
     } catch (err) {
       setError(err instanceof Error ? err.message : "Login failed")
@@ -36,6 +37,7 @@ function LoginForm() {
     setError("")
     try {
       await signInWithOtp(email)
+      try { const { default: posthog } = await import('posthog-js'); posthog.capture('magic_link_sent') } catch {}
       setMagicSent(true)
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to send magic link")

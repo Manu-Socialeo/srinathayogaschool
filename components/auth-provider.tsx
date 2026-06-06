@@ -1,6 +1,7 @@
 'use client'
 
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
+import { createBrowserClient } from '@/lib/supabase'
 import { getCurrentUser, getCurrentProfile } from '@/lib/auth'
 import type { Profile } from '@/lib/supabase-types'
 
@@ -36,6 +37,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     refresh().finally(() => setLoading(false))
+
+    const supabase = createBrowserClient()
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+      if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+        refresh()
+      } else if (event === 'SIGNED_OUT') {
+        setUser(null)
+        setProfile(null)
+        setLoading(false)
+      }
+    })
+
+    return () => subscription.unsubscribe()
   }, [])
 
   return (

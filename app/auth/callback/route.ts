@@ -12,6 +12,9 @@ export async function GET(request: NextRequest) {
     if (!supabaseUrl || !supabaseAnonKey) {
       return NextResponse.redirect(`${origin}/dashboard/login?error=config_error`)
     }
+
+    let response = NextResponse.redirect(`${origin}${next}`)
+
     const supabase = createServerClient(
       supabaseUrl,
       supabaseAnonKey,
@@ -21,14 +24,18 @@ export async function GET(request: NextRequest) {
             return request.cookies.getAll()
           },
           setAll(cookiesToSet) {
-            cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
+            cookiesToSet.forEach(({ name, value, options }) => {
+              request.cookies.set(name, value)
+              response.cookies.set(name, value, options)
+            })
           },
         },
       }
     )
+
     const { error } = await supabase.auth.exchangeCodeForSession(code)
     if (!error) {
-      return NextResponse.redirect(`${origin}${next}`)
+      return response
     }
   }
 

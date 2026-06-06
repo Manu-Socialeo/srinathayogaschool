@@ -101,6 +101,13 @@ export default function DashboardCheckoutPage() {
       }
     }
 
+    try {
+      const { default: posthog } = await import('posthog-js')
+      posthog.capture('purchase', {
+        total: totalPrice,
+        items: state.items.map(i => ({ title: i.title, type: i.type, price: i.price })),
+      })
+    } catch {}
     setSuccess(true)
     clearCart()
     setTimeout(() => router.push('/dashboard/orders'), 1500)

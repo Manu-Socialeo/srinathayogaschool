@@ -12,14 +12,6 @@ export async function signUpWithEmail(email: string, password: string, name: str
     options: { data: { name } },
   })
   if (error) throw error
-  if (data.user) {
-    await sb().from('profiles').upsert({
-      id: data.user.id,
-      email,
-      name,
-      role: 'student',
-    })
-  }
   return data
 }
 
@@ -32,7 +24,10 @@ export async function signInWithEmail(email: string, password: string) {
 export async function signInWithOtp(email: string) {
   const { error } = await sb().auth.signInWithOtp({
     email,
-    options: { shouldCreateUser: true },
+    options: {
+      shouldCreateUser: true,
+      emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback`,
+    },
   })
   if (error) throw error
 }
@@ -69,7 +64,7 @@ export async function getCurrentProfile(): Promise<Profile | null> {
 
 export async function resetPassword(email: string) {
   const { error } = await sb().auth.resetPasswordForEmail(email, {
-    redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard`,
+    redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback?next=/dashboard/reset-password`,
   })
   if (error) throw error
 }

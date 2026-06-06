@@ -21,6 +21,7 @@ export default function SignupPage() {
     setError('')
     try {
       await signUpWithEmail(email, password, name)
+      try { const { default: posthog } = await import('posthog-js'); posthog.capture('signup') } catch {}
       setSuccess(true)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Signup failed')

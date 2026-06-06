@@ -7,17 +7,21 @@ import { WorkshopCard } from '@/components/app/workshop-card'
 import { ProductCard } from '@/components/app/product-card'
 import { TeacherCard } from '@/components/app/teacher-card'
 import { teachers, announcements } from '@/lib/app-data'
-import { fetchCourses, fetchWorkshops, fetchProducts } from '@/lib/supabase-queries'
+import { fetchCourses, fetchWorkshops, fetchProducts, getEnrollments } from '@/lib/supabase-queries'
+import { useAuth } from '@/components/auth-provider'
 import type { Course, Workshop, Product } from '@/lib/app-data'
 import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import { HorizontalScrollSkeleton } from '@/components/app/ui-states'
 
 export function HomeScreen() {
+  const { profile } = useAuth()
   const [isLoading, setIsLoading] = useState(true)
   const [courses, setCourses] = useState<Course[]>([])
   const [workshops, setWorkshops] = useState<Workshop[]>([])
   const [products, setProducts] = useState<Product[]>([])
+  const [enrolledIds, setEnrolledIds] = useState<Set<string>>(new Set())
+  const [enrollments, setEnrollments] = useState<Map<string, number>>(new Map())
 
   useEffect(() => {
     Promise.all([fetchCourses(), fetchWorkshops(), fetchProducts()])
@@ -30,10 +34,28 @@ export function HomeScreen() {
       .catch(() => setIsLoading(false))
   }, [])
 
-  const purchasedCourses = courses.filter(c => c.isPurchased)
+  useEffect(() => {
+    if (!profile?.id) return
+    getEnrollments(profile.id).then(enrolls => {
+      const ids = new Set<string>()
+      const progress = new Map<string, number>()
+      enrolls.forEach(e => {
+        ids.add(e.course_id)
+        progress.set(e.course_id, e.progress)
+      })
+      setEnrolledIds(ids)
+      setEnrollments(progress)
+    })
+  }, [profile?.id])
+
+  const purchasedCourses = courses.filter(c => enrolledIds.has(c.id)).map(c => ({
+    ...c,
+    isPurchased: true,
+    progress: enrollments.get(c.id) ?? 0,
+  }))
   const continueLearning = purchasedCourses.filter(c => c.progress && c.progress > 0 && c.progress < 100)
   const completedCourses = purchasedCourses.filter(c => c.progress === 100)
-  const recommendedCourses = courses.filter(c => !c.isPurchased).slice(0, 4)
+  const recommendedCourses = courses.filter(c => !enrolledIds.has(c.id)).slice(0, 4)
   const featuredProducts = products.slice(0, 4)
   const featuredTeachers = teachers.slice(0, 4)
   const upcomingWorkshops = workshops.slice(0, 3)
