@@ -34,16 +34,17 @@ export async function updateSession(request: NextRequest) {
 
   const protectedPaths = ['/dashboard', '/checkout']
   const isProtected = protectedPaths.some(p => request.nextUrl.pathname.startsWith(p))
-  const isLoginPage = request.nextUrl.pathname === '/dashboard/login'
+  const authPages = ['/dashboard/login', '/dashboard/signup', '/dashboard/forgot-password', '/dashboard/reset-password']
+  const isAuthPage = authPages.some(p => request.nextUrl.pathname === p)
 
-  if (isProtected && !user && !isLoginPage) {
+  if (isProtected && !user && !isAuthPage) {
     const url = request.nextUrl.clone()
     url.pathname = '/dashboard/login'
     url.searchParams.set('redirect', request.nextUrl.pathname)
     return NextResponse.redirect(url)
   }
 
-  if (user && isLoginPage) {
+  if (user && isAuthPage) {
     const url = request.nextUrl.clone()
     url.pathname = '/dashboard'
     return NextResponse.redirect(url)
