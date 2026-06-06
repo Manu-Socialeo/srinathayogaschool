@@ -11,14 +11,4 @@ const nextConfig = {
   },
 }
 
-let config = nextConfig
-try {
-  const { withSentryConfig } = await import('@sentry/nextjs')
-  config = withSentryConfig(config, {
-    silent: true,
-    widenClientFileUpload: true,
-    tunnelRoute: '/monitoring',
-  })
-} catch {}
-
-export default config
+export default nextConfig

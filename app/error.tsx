@@ -1,17 +1,10 @@
 'use client'
 
 import Link from 'next/link'
-import { useEffect } from 'react'
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
 
 export default function ErrorPage({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
-  useEffect(() => {
-    try {
-      const Sentry = require('@sentry/nextjs')
-      Sentry.captureException(error)
-    } catch {}
-  }, [error])
   return (
     <div className="min-h-screen bg-white">
       <Header />
