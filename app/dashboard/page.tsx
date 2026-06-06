@@ -1,15 +1,17 @@
 'use client'
 
 import { useState, useCallback, useEffect } from 'react'
+import dynamic from 'next/dynamic'
 import { BottomNav } from '@/components/app/bottom-nav'
 import { AppHeader } from '@/components/app/app-header'
-import { HomeScreen } from '@/components/app/screens/home-screen'
-import { LearnScreen } from '@/components/app/screens/learn-screen'
-import { WorkshopsScreen } from '@/components/app/screens/workshops-screen'
-import { StoreScreen } from '@/components/app/screens/store-screen'
-import { ProfileScreen } from '@/components/app/screens/profile-screen'
 import { getCurrentProfile } from '@/lib/auth'
 import type { Profile } from '@/lib/supabase-types'
+
+const HomeScreen = dynamic(() => import('@/components/app/screens/home-screen').then(m => m.HomeScreen), { ssr: false })
+const LearnScreen = dynamic(() => import('@/components/app/screens/learn-screen').then(m => m.LearnScreen), { ssr: false })
+const WorkshopsScreen = dynamic(() => import('@/components/app/screens/workshops-screen').then(m => m.WorkshopsScreen), { ssr: false })
+const StoreScreen = dynamic(() => import('@/components/app/screens/store-screen').then(m => m.StoreScreen), { ssr: false })
+const ProfileScreen = dynamic(() => import('@/components/app/screens/profile-screen').then(m => m.ProfileScreen), { ssr: false })
 
 export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState('home')
