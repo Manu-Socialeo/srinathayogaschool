@@ -1,7 +1,7 @@
 import { createBrowserClient as createSsrBrowserClient } from '@supabase/ssr'
 import type { Database } from './supabase-types'
 
-let _supabase: ReturnType<typeof createSsrBrowserClient<Database>> | null = null
+let _supabase: ReturnType<typeof createSsrBrowserClient> | null = null
 
 export function createBrowserClient() {
   if (!_supabase) {

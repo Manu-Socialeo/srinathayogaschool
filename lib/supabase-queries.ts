@@ -270,16 +270,14 @@ export async function getOrders(userId: string): Promise<(Order & { items?: Orde
     .select('*')
     .eq('user_id', userId)
     .order('created_at', { ascending: false })
-    .returns<Order[]>()
 
   if (!orders) return []
 
-  const orderIds = orders.map(o => o.id)
+  const orderIds = orders.map((o: any) => o.id)
   const { data: allItems } = await sb()
     .from('order_items')
     .select('*, courses(title), products(title), workshops(title)')
     .in('order_id', orderIds)
-    .returns<(OrderItem & { courses?: { title: string } | null; products?: { title: string } | null; workshops?: { title: string } | null })[]>()
 
   const itemsByOrder: Record<string, (OrderItem & { itemTitle?: string })[]> = {}
   if (allItems) {
@@ -318,11 +316,20 @@ export async function submitTTCEnrollment(enrollment: Omit<TTCEnrollment, 'id' |
 }
 
 // ─── Cached fetch functions (transform DB types → App types) ───
+// Cache TTL: 60 seconds — data auto-refreshes after admin edits in Supabase
 
-let _coursesCache: AppCourse[] | null = null
-let _productsCache: AppProduct[] | null = null
-let _workshopsCache: AppWorkshop[] | null = null
-let _categoriesCache: AppCategory[] | null = null
+const CACHE_TTL = 60_000
+
+type CacheEntry<T> = { data: T; ts: number }
+
+let _coursesCache: CacheEntry<AppCourse[]> | null = null
+let _productsCache: CacheEntry<AppProduct[]> | null = null
+let _workshopsCache: CacheEntry<AppWorkshop[]> | null = null
+let _categoriesCache: CacheEntry<AppCategory[]> | null = null
+
+function isCacheFresh(entry: CacheEntry<unknown> | null): boolean {
+  return entry !== null && Date.now() - entry.ts < CACHE_TTL
+}
 
 function mapCourse(c: Course, catMap: Record<string, string>): AppCourse {
   const catSlug = Object.entries(catMap).find(([, id]) => id === c.category_id)?.[0] ?? ''
@@ -352,36 +359,39 @@ function mapWorkshop(w: Workshop): AppWorkshop {
 }
 
 export async function fetchCourses(): Promise<AppCourse[]> {
-  if (_coursesCache) return _coursesCache
+  if (isCacheFresh(_coursesCache)) return _coursesCache!.data
   const [courses, cats] = await Promise.all([getCourses(), getCategories('course')])
   const catMap: Record<string, string> = {}
   for (const c of cats) catMap[c.slug] = c.id
-  _coursesCache = courses.map(c => mapCourse(c, catMap))
-  return _coursesCache
+  _coursesCache = { data: courses.map(c => mapCourse(c, catMap)), ts: Date.now() }
+  return _coursesCache.data
 }
 
 export async function fetchProducts(): Promise<AppProduct[]> {
-  if (_productsCache) return _productsCache
+  if (isCacheFresh(_productsCache)) return _productsCache!.data
   const [products, cats] = await Promise.all([getProducts(), getCategories('product')])
   const catMap: Record<string, string> = {}
   for (const c of cats) catMap[c.slug] = c.id
-  _productsCache = products.map(p => {
-    const catSlug = Object.entries(catMap).find(([, id]) => id === p.category_id)?.[0] ?? ''
-    return { ...mapProduct(p), category: catSlug }
-  })
-  return _productsCache
+  _productsCache = {
+    data: products.map(p => {
+      const catSlug = Object.entries(catMap).find(([, id]) => id === p.category_id)?.[0] ?? ''
+      return { ...mapProduct(p), category: catSlug }
+    }),
+    ts: Date.now(),
+  }
+  return _productsCache.data
 }
 
 export async function fetchWorkshops(): Promise<AppWorkshop[]> {
-  if (_workshopsCache) return _workshopsCache
-  _workshopsCache = (await getWorkshops()).map(mapWorkshop)
-  return _workshopsCache
+  if (isCacheFresh(_workshopsCache)) return _workshopsCache!.data
+  _workshopsCache = { data: (await getWorkshops()).map(mapWorkshop), ts: Date.now() }
+  return _workshopsCache.data
 }
 
 export async function fetchCategories(): Promise<AppCategory[]> {
-  if (_categoriesCache) return _categoriesCache
-  _categoriesCache = (await getCategories()).map(c => ({ id: c.slug, label: c.name }))
-  return _categoriesCache
+  if (isCacheFresh(_categoriesCache)) return _categoriesCache!.data
+  _categoriesCache = { data: (await getCategories()).map(c => ({ id: c.slug, label: c.name })), ts: Date.now() }
+  return _categoriesCache.data
 }
 
 export function clearCache() {

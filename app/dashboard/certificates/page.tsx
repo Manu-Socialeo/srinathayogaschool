@@ -29,13 +29,13 @@ export default function CertificatesPage() {
           .order('completed_at', { ascending: false })
 
         if (enrollments) {
-          const courseIds = enrollments.map(e => e.course_id)
+          const courseIds = enrollments.map((e: any) => e.course_id)
           const { data: courses } = await supabase
             .from('courses')
             .select('*')
             .in('id', courseIds)
 
-          const courseMap = new Map(courses?.map(c => [c.id, c]) ?? [])
+          const courseMap = new Map(courses?.map((c: any) => [c.id, c]) ?? [])
           setCertificates(
             enrollments.map(e => ({ ...e, course: courseMap.get(e.course_id) ?? null }))
           )

@@ -24,7 +24,7 @@ export default function CalendarPage() {
           .eq('status', 'registered')
 
         if (registrations && registrations.length > 0) {
-          const workshopIds = registrations.map(r => r.workshop_id)
+          const workshopIds = registrations.map((r: any) => r.workshop_id)
           const { data: workshopData } = await supabase
             .from('workshops')
             .select('*')
@@ -33,8 +33,8 @@ export default function CalendarPage() {
           if (workshopData) {
             const now = new Date()
             const upcoming = workshopData
-              .filter(w => new Date(w.start_date) >= now)
-              .sort((a, b) => new Date(a.start_date).getTime() - new Date(b.start_date).getTime())
+              .filter((w: any) => new Date(w.start_date) >= now)
+              .sort((a: any, b: any) => new Date(a.start_date).getTime() - new Date(b.start_date).getTime())
             setWorkshops(upcoming)
           }
         }
