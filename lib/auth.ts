@@ -5,6 +5,10 @@ function sb() {
   return createBrowserClient()
 }
 
+function getRedirectBase(): string {
+  return process.env.NEXT_PUBLIC_APP_URL || (typeof window !== 'undefined' ? window.location.origin : '')
+}
+
 export async function signUpWithEmail(email: string, password: string, name: string) {
   const { data, error } = await sb().auth.signUp({
     email,
@@ -26,7 +30,7 @@ export async function signInWithOtp(email: string) {
     email,
     options: {
       shouldCreateUser: true,
-      emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback`,
+      emailRedirectTo: `${getRedirectBase()}/auth/callback`,
     },
   })
   if (error) throw error
@@ -35,7 +39,7 @@ export async function signInWithOtp(email: string) {
 export async function signInWithGoogle() {
   const { error } = await sb().auth.signInWithOAuth({
     provider: 'google',
-    options: { redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback` },
+    options: { redirectTo: `${getRedirectBase()}/auth/callback` },
   })
   if (error) throw error
 }
@@ -64,7 +68,7 @@ export async function getCurrentProfile(): Promise<Profile | null> {
 
 export async function resetPassword(email: string) {
   const { error } = await sb().auth.resetPasswordForEmail(email, {
-    redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback?next=/dashboard/reset-password`,
+    redirectTo: `${getRedirectBase()}/auth/callback?next=/dashboard/reset-password`,
   })
   if (error) throw error
 }
