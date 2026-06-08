@@ -16,6 +16,7 @@ import {
   Video,
   Download
 } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { getCurrentProfile, signOut } from '@/lib/auth'
 import { getEnrollments, getOrders, getSavedItems, getTTCResources } from '@/lib/supabase-queries'
 import { fetchCourses } from '@/lib/supabase-queries'
@@ -28,6 +29,7 @@ import { useEffect, useState } from 'react'
 import { LoadingScreen, ErrorScreen } from '@/components/app/ui-states'
 
 export function ProfileScreen() {
+  const router = useRouter()
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [profile, setProfile] = useState<Profile | null>(null)
@@ -84,7 +86,7 @@ export function ProfileScreen() {
 
   const settingsItems = [
     { icon: Bell, label: 'Notifications' },
-    { icon: Settings, label: 'Account Settings' },
+    { icon: Settings, label: 'Account Settings', onClick: () => router.push('/dashboard/account') },
     { icon: HelpCircle, label: 'Help & Support' },
     { icon: Mail, label: 'Contact Us' },
   ]
@@ -128,7 +130,7 @@ export function ProfileScreen() {
             <p className="text-sm text-muted-foreground truncate">{profile?.email}</p>
             <p className="text-xs text-muted-foreground mt-1">Member since {memberSince}</p>
           </div>
-          <button className="w-10 h-10 bg-secondary rounded-full flex items-center justify-center touch-target transition-transform active:scale-95">
+          <button onClick={() => router.push('/dashboard/account')} className="w-10 h-10 bg-secondary rounded-full flex items-center justify-center touch-target transition-transform active:scale-95">
             <Settings className="w-5 h-5 text-foreground" />
           </button>
         </div>
@@ -217,6 +219,7 @@ export function ProfileScreen() {
           {settingsItems.map((item) => (
             <button
               key={item.label}
+              onClick={item.onClick}
               className="w-full flex items-center justify-between p-4 touch-target transition-colors active:bg-secondary/50"
             >
               <div className="flex items-center gap-3">

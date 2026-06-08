@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { ChevronLeft, Loader2, CheckCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useCart } from '@/components/cart/cart-context'
-import { getCurrentProfile } from '@/lib/auth'
+import { getCurrentProfile, updateProfile } from '@/lib/auth'
 import { createBrowserClient } from '@/lib/supabase'
 import type { Profile } from '@/lib/supabase-types'
 
@@ -36,6 +36,19 @@ export default function DashboardCheckoutPage() {
       setPageLoading(false)
     })
   }, [])
+
+  useEffect(() => {
+    if (form.pincode.length !== 6) return
+    fetch(`https://api.postalpincode.in/pincode/${form.pincode}`)
+      .then(r => r.json())
+      .then(data => {
+        if (data?.[0]?.Status === 'Success' && data[0].PostOffice?.length) {
+          const po = data[0].PostOffice[0]
+          setForm(f => ({ ...f, city: po.District || po.Name || '', state: po.State || '' }))
+        }
+      })
+      .catch(() => {})
+  }, [form.pincode])
 
   const handlePayment = async () => {
     if (state.items.length === 0) return
@@ -67,6 +80,9 @@ export default function DashboardCheckoutPage() {
       }).select('id').single()
       if (addr) addressId = addr.id
     }
+
+    const addressStr = [form.address, form.city, form.state, form.pincode].join('|')
+    await updateProfile({ phone: form.phone || null, address: addressStr }).catch(() => {})
 
     const { data: order } = await sb.from('orders').insert({
       user_id: p.id,
