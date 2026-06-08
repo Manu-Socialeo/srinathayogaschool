@@ -14,7 +14,8 @@ import {
   HelpCircle,
   Mail,
   Video,
-  Download
+  Download,
+  CheckCircle
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { getCurrentProfile, signOut } from '@/lib/auth'
@@ -74,6 +75,13 @@ export function ProfileScreen() {
   }, [])
 
   const completedCourses = enrolledCourses.filter(c => c.progress === 100)
+
+  const passwordDone = profile?.password_set === true
+  const phoneDone = !!profile?.phone
+  const addressDone = !!profile?.address
+  const pct = (passwordDone ? 50 : 0) + (phoneDone ? 25 : 0) + (addressDone ? 25 : 0)
+  const allDone = pct === 100
+  const segments = [passwordDone, phoneDone, addressDone]
 
   const menuItems = [
     { icon: ShoppingBag, label: 'Order History', count: orderCount },
@@ -152,6 +160,73 @@ export function ProfileScreen() {
             <p className="text-xs text-muted-foreground mt-1">Certificates</p>
           </div>
         </div>
+      </div>
+
+      {/* Profile Completion */}
+      <div className="px-4">
+        {allDone ? (
+          <button onClick={() => router.push('/dashboard/account')}
+            className="w-full bg-card rounded-xl border border-border/50 p-3 flex items-center justify-between card-interactive">
+            <div className="flex items-center gap-2">
+              <CheckCircle className="w-4 h-4 text-primary" />
+              <span className="text-sm font-medium text-foreground">Profile Complete</span>
+            </div>
+            <ChevronRight className="w-4 h-4 text-muted-foreground" />
+          </button>
+        ) : (
+          <div className="bg-card rounded-xl border border-border/50 p-4">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-sm font-medium text-foreground">Profile Completion</span>
+              <div className="flex gap-1">
+                {segments.map((done, i) => (
+                  <div key={i} className={`w-2 h-2 rounded-full ${done ? 'bg-primary' : 'bg-border'}`} />
+                ))}
+              </div>
+            </div>
+            <div className="relative h-2 bg-secondary rounded-full mb-3 overflow-hidden">
+              <div className="absolute inset-y-0 left-0 bg-primary rounded-full transition-all duration-500"
+                style={{ width: `${pct}%` }} />
+            </div>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-3.5 h-3.5 text-primary" />
+                  <span className="text-xs text-foreground">Name</span>
+                </div>
+              </div>
+              <button onClick={() => router.push('/dashboard/account')}
+                className="w-full flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  {passwordDone
+                    ? <CheckCircle className="w-3.5 h-3.5 text-primary" />
+                    : <svg className="w-3.5 h-3.5 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><circle cx="12" cy="12" r="10"/></svg>}
+                  <span className="text-xs text-foreground">Set Password</span>
+                </div>
+                <span className="text-xs text-primary font-medium">{passwordDone ? 'Done' : 'Set'}</span>
+              </button>
+              <button onClick={() => router.push('/dashboard/account')}
+                className="w-full flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  {phoneDone
+                    ? <CheckCircle className="w-3.5 h-3.5 text-primary" />
+                    : <svg className="w-3.5 h-3.5 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><circle cx="12" cy="12" r="10"/></svg>}
+                  <span className="text-xs text-foreground">Add Phone</span>
+                </div>
+                <span className="text-xs text-primary font-medium">{phoneDone ? 'Done' : 'Add'}</span>
+              </button>
+              <button onClick={() => router.push('/dashboard/account')}
+                className="w-full flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  {addressDone
+                    ? <CheckCircle className="w-3.5 h-3.5 text-primary" />
+                    : <svg className="w-3.5 h-3.5 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><circle cx="12" cy="12" r="10"/></svg>}
+                  <span className="text-xs text-foreground">Add Address</span>
+                </div>
+                <span className="text-xs text-primary font-medium">{addressDone ? 'Done' : 'Add'}</span>
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Quick Actions */}

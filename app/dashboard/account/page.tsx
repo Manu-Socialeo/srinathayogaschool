@@ -118,6 +118,7 @@ export default function AccountPage() {
       const sb = createBrowserClient()
       const { error } = await sb.auth.updateUser({ password })
       if (error) throw error
+      await updateProfile({ password_set: true }).catch(() => {})
       setPasswordSuccess('Password updated')
       setPassword('')
       setConfirmPassword('')

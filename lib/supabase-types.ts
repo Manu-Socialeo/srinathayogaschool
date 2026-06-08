@@ -97,6 +97,7 @@ export interface Profile {
   avatar_url: string | null
   phone: string | null
   address: string | null
+  password_set: boolean
   role: 'student' | 'admin'
   created_at: string
 }

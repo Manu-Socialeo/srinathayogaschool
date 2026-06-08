@@ -4,7 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { signUpWithEmail } from '@/lib/auth'
+import { signUpWithEmail, updateProfile } from '@/lib/auth'
 
 export default function SignupPage() {
   const router = useRouter()
@@ -21,6 +21,7 @@ export default function SignupPage() {
     setError('')
     try {
       await signUpWithEmail(email, password, name)
+      await updateProfile({ password_set: true }).catch(() => {})
       try { const { default: posthog } = await import('posthog-js'); posthog.capture('signup') } catch {}
       setSuccess(true)
     } catch (err) {
