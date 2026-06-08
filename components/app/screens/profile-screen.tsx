@@ -18,7 +18,7 @@ import {
   CheckCircle
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { getCurrentProfile, signOut } from '@/lib/auth'
+import { getCurrentProfile, getCurrentUser, signOut } from '@/lib/auth'
 import { getEnrollments, getOrders, getSavedItems, getTTCResources } from '@/lib/supabase-queries'
 import { fetchCourses } from '@/lib/supabase-queries'
 import type { Profile } from '@/lib/supabase-types'
@@ -34,6 +34,7 @@ export function ProfileScreen() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [profile, setProfile] = useState<Profile | null>(null)
+  const [authEmail, setAuthEmail] = useState<string | null>(null)
   const [enrolledCourses, setEnrolledCourses] = useState<AppCourse[]>([])
   const [memberSince, setMemberSince] = useState('')
   const [ttcResources, setTtcResources] = useState<DBTTCResource[]>([])
@@ -44,11 +45,17 @@ export function ProfileScreen() {
     let cancelled = false
     async function load() {
       try {
+        const user = await getCurrentUser()
+        if (cancelled) return
+        if (!user) { setError('Not signed in'); return }
+        setAuthEmail(user.email || null)
+
         const prof = await getCurrentProfile()
         if (cancelled) return
-        if (!prof) { setError('Not signed in'); return }
         setProfile(prof)
-        setMemberSince(new Date(prof.created_at).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' }))
+        setMemberSince(new Date(prof?.created_at || user.created_at).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' }))
+
+        if (!prof) { setIsLoading(false); return }
 
         const [allCourses, enrollments, orders, saved, resources] = await Promise.all([
           fetchCourses(),
@@ -134,8 +141,8 @@ export function ProfileScreen() {
             />
           </div>
           <div className="flex-1 min-w-0">
-            <h1 className="font-serif text-xl text-foreground truncate">{profile?.name}</h1>
-            <p className="text-sm text-muted-foreground truncate">{profile?.email}</p>
+            <h1 className="font-serif text-xl text-foreground truncate">{profile?.name || authEmail?.split('@')[0] || 'User'}</h1>
+            <p className="text-sm text-muted-foreground truncate">{profile?.email || authEmail}</p>
             <p className="text-xs text-muted-foreground mt-1">Member since {memberSince}</p>
           </div>
           <button onClick={() => router.push('/dashboard/account')} className="w-10 h-10 bg-secondary rounded-full flex items-center justify-center touch-target transition-transform active:scale-95">

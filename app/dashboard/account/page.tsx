@@ -5,13 +5,14 @@ import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import { createBrowserClient } from '@/lib/supabase'
-import { getCurrentProfile, updateProfile } from '@/lib/auth'
+import { getCurrentProfile, getCurrentUser, updateProfile } from '@/lib/auth'
 import { uploadAvatar } from '@/lib/storage'
 import type { Profile } from '@/lib/supabase-types'
 
 export default function AccountPage() {
   const router = useRouter()
   const [profile, setProfile] = useState<Profile | null>(null)
+  const [authEmail, setAuthEmail] = useState('')
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
   const [avatarUrl, setAvatarUrl] = useState('')
@@ -34,6 +35,9 @@ export default function AccountPage() {
 
   useEffect(() => {
     async function load() {
+      const user = await getCurrentUser()
+      if (user) setAuthEmail(user.email || '')
+
       const prof = await getCurrentProfile()
       if (prof) {
         setProfile(prof)
@@ -176,8 +180,8 @@ export default function AccountPage() {
             </button>
           </div>
           <div>
-            <p className="font-medium text-[#264020]">{profile?.name || 'User'}</p>
-            <p className="text-sm text-[#264020]/60">{profile?.email}</p>
+            <p className="font-medium text-[#264020]">{profile?.name || authEmail?.split('@')[0] || 'User'}</p>
+            <p className="text-sm text-[#264020]/60">{profile?.email || authEmail}</p>
             <button
               onClick={() => fileInputRef.current?.click()}
               disabled={uploading}
@@ -290,7 +294,7 @@ export default function AccountPage() {
             <label className="block text-sm font-medium text-[#264020] mb-2">Email</label>
             <input
               type="email"
-              value={profile?.email || ''}
+              value={authEmail}
               disabled
               className="w-full px-4 py-3 border border-[#E5E5E5] rounded-xl text-[#264020]/50 bg-[#FAF8F5] cursor-not-allowed"
             />

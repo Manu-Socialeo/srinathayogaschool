@@ -58,11 +58,25 @@ export async function getCurrentUser() {
 export async function getCurrentProfile(): Promise<Profile | null> {
   const user = await getCurrentUser()
   if (!user) return null
-  const { data } = await sb()
+  let { data } = await sb()
     .from('profiles')
     .select('*')
     .eq('id', user.id)
     .single()
+  if (!data) {
+    const name = user.user_metadata?.name || user.email?.split('@')[0] || ''
+    const { data: inserted, error } = await sb()
+      .from('profiles')
+      .insert({
+        id: user.id,
+        email: user.email || '',
+        name,
+        password_set: !!(user.encrypted_password),
+      })
+      .select()
+      .single()
+    if (!error && inserted) data = inserted
+  }
   return data
 }
 
